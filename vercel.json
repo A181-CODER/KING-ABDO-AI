@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/warning.html"
+    },
+    {
+      "source": "/(.*)\\.(js|json|env|config|log|txt|md|gitignore|lock)",
+      "destination": "/warning.html"
+    },
+    {
+      "source": "/api",
+      "destination": "/warning.html"
+    }
+  ]
+}
