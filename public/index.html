@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KING ABDO AI - المحادثة الملكية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(270deg, #1e1b3a, #3a2b6d, #007BFF, #5D3FD3);
+            background-size: 800% 800%;
+            animation: gradientFlow 15s ease infinite;
+            color: rgb(0, 0, 0);
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .logo-text {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(270deg, #FFD700, #007BFF, #5D3FD3, #2f7b46);
+            background-size: 600% 600%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: colorShift 10s ease infinite;
+            text-align: center;
+        }
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes goldGlow {
+            0%   { color: #B8860B; }
+            50%  { color: #FFD700; }
+            100% { color: #FFF8DC; }
+        }
+        .animate-gold-glow {
+            animation: goldGlow 4s ease-in-out infinite alternate;
+        }      
+        .crown {
+            position: relative;
+        }
+        .crown:before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 20px;
+            background: #FFD700;
+            clip-path: polygon(0% 100%, 20% 0%, 40% 100%, 60% 0%, 80% 100%, 100% 0%, 100% 100%);
+        }
+        .colorful-gradient {
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            color: white;
+        }
+        .colorful-gradient:hover {
+            background: linear-gradient(to right, #0096c7, #51cf66);
+        }
+        #sendButton {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #sendButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8 text-center">
+            <div class="crown inline-block mb-2">
+                <h1 class="logo-text">KING ABDO AI</h1>
+            </div>
+            <p class="text-lg text-gray-600">نظام المحادثة الذكي الملكي</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+            <div class="p-4 flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                    <i class="fas fa-crown text-yellow-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl animate-gold-glow">KING ABDO</h2>
+                    <p class="text-yellow-200 text-sm">متصل الآن</p>
+                </div>
+            </div>
+
+            <div id="messages" class="h-96 overflow-y-auto p-4 space-y-4">
+                <div class="message-enter flex justify-start">
+                    <div class="max-w-xs md:max-w-md lg:max-w-lg bg-gray-100 rounded-xl p-3">
+                        <p class="text-gray-800">أهلاً وسهلاً بك أيها الضيف الكريم في بلاطنا الملكي. كيف يمكنني خدمتكم اليوم؟</p>
+                        <p class="text-xs text-gray-500 mt-1 text-left">الآن</p>
+                    </div>
+                </div>
+                <div class="message-enter flex justify-end">
+                    <div class="max-w-xs md:max-w-md lg:max-w-lg bg-blue-600 text-white rounded-xl p-3">
+                        <p>مرحباً جلالة الملك، كيف حالكم اليوم؟</p>
+                        <p class="text-xs text-blue-200 mt-1 text-left">الآن</p>
+                    </div>
+                </div>
+                <div class="max-w-xs md:max-w-md lg:max-w-lg bg-gray-100 rounded-xl p-3">
+                        <p class="text-gray-800">بفضل الله تعالى نحن في تمام الصحة والعافية، ونشكركم على سؤالكم الكريم.</p>
+                        <p class="text-xs text-gray-500 mt-1 text-left">الآن</p>
+                    </div>
+            </div>
+
+             
+
+            <div class="border-t border-gray-200 p-4 bg-gray-50">
+                <div class="flex items-center">
+                    <button id="attachBtn" class="w-10 h-10 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 ml-2">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="fileInput" multiple accept="image/*,.pdf,.docx" style="display: none;" />
+                    <input 
+                        id="messageInput"
+                        type="text" 
+                        placeholder="اكتب: اتلو سورة الكهف..." 
+                        class="flex-1 border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    <button id="sendButton" class="w-10 h-10 rounded-full colorful-gradient text-white flex items-center justify-center">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2 text-center">KING ABDO AI يستخدم لتقديم إجابات سريعة ودقيقة</p>
+            </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                <div class="text-blue-600 text-2xl mb-2">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">تلاوة دقيقة</h3>
+                <p class="text-gray-600 text-sm mt-1">من ملف محلي</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                <div class="text-purple-600 text-2xl mb-2">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">أسلوب ملكي</h3>
+                <p class="text-gray-600 text-sm mt-1">محادثة تليق بمقامك</p>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-md text-center">
+                <div class="text-blue-600 text-2xl mb-2">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">سرعة فائقة</h3>
+                <p class="text-gray-600 text-sm mt-1">أسرع نظام محادثة باستخدام </p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                <div class="text-green-600 text-2xl mb-2">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">آمن وخاص ودقيق</h3>
+                <p class="text-gray-600 text-sm mt-1">حماية كاملة لخصوصيتكم</p>
+            </div>
+            
+        </div>
+        <div style="text-align: center; font-family: 'Arial', sans-serif; font-size: 14px; color: #ffe100; padding: 10px;">
+            جميع الحقوق محفوظة لKING ABDO ©
+        </div>
+    </div>
+
+    <script>
+    
+        // خريطة أسماء السور
+        const SURAH_NAMES = {
+            "الفاتحة": 1, "البقرة": 2, "آل عمران": 3, "النساء": 4, "المائدة": 5,
+            "الأنعام": 6, "الأعراف": 7, "الأنفال": 8, "التوبة": 9, "يونس": 10,
+            "هود": 11, "يوسف": 12, "الرعد": 13, "إبراهيم": 14, "الحجر": 15,
+            "النحل": 16, "الإسراء": 17, "الكهف": 18, "مريم": 19, "طه": 20,
+            "الأنبياء": 21, "الحج": 22, "المؤمنون": 23, "النور": 24, "الفرقان": 25,
+            "الشعراء": 26, "النمل": 27, "القصص": 28, "العنكبوت": 29, "الروم": 30,
+            "لقمان": 31, "السجدة": 32, "الأحزاب": 33, "سبأ": 34, "فاطر": 35,
+            "يس": 36, "الصافات": 37, "ص": 38, "الزمر": 39, "غافر": 40,
+            "فصلت": 41, "الشورى": 42, "الزخرف": 43, "الدخان": 44, "الجاثية": 45,
+            "الأحقاف": 46, "محمد": 47, "الفتح": 48, "الحجرات": 49, "ق": 50,
+            "الذاريات": 51, "الطور": 52, "النجم": 53, "القمر": 54, "الرحمن": 55,
+            "الواقعة": 56, "الحديد": 57, "المجادلة": 58, "الحشر": 59, "الممتحنة": 60,
+            "الصف": 61, "الجمعة": 62, "المنافقون": 63, "التغابن": 64, "الطلاق": 65,
+            "التحريم": 66, "الملك": 67, "القلم": 68, "الحاقة": 69, "المعارج": 70,
+            "نوح": 71, "الجن": 72, "المزمل": 73, "المدثر": 74, "القيامة": 75,
+            "الإنسان": 76, "المرسلات": 77, "النبأ": 78, "النازعات": 79,
+            "عبس": 80, "التكوير": 81, "الانفطار": 82, "المطففين": 83, "الانشقاق": 84,
+            "البروج": 85, "الطارق": 86, "الأعلى": 87, "الغاشية": 88, "الفجر": 89,
+            "البلد": 90, "الشمس": 91, "الليل": 92, "الضحى": 93, "الشرح": 94,
+            "التين": 95, "العلق": 96, "القدر": 97, "البينة": 98, "الزلزلة": 99,
+            "العاديات": 100, "القارعة": 101, "التكاثر": 102, "العصر": 103, "الهمزة": 104,
+            "الفيل": 105, "قريش": 106, "الماعون": 107, "الكوثر": 108, "الكافرون": 109,
+            "النصر": 110, "المسد": 111, "الإخلاص": 112, "الفلق": 113, "الناس": 114
+        };
+
+        document.getElementById("attachBtn").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const messagesContainer = document.getElementById('messages');
+
+            function addMessage(text, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message-enter flex justify-' + (isUser ? 'end' : 'start');
+                const messageContent = `
+                    <div class="max-w-xs md:max-w-md lg:max-w-lg ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'} rounded-xl p-3">
+                        <p>${text}</p>
+                        <p class="text-xs ${isUser ? 'text-blue-200' : 'text-gray-500'} mt-1 text-left">الآن</p>
+                    </div>
+                `;
+                messageDiv.innerHTML = messageContent;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            sendButton.addEventListener('click', async function () {
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                addMessage(message, true);
+                messageInput.value = '';
+
+                // ✅ كشف أمر التلاوة
+                const surahMatch = message.match(/(اتلُ?|اقرأ|اكتب لي|تلاوة|سورة)\s+([\u0600-\u06FF0-9]+)/i);
+                if (surahMatch) {
+                    const query = surahMatch[2].trim();
+                    let surahNumber = null;
+
+                    if (!isNaN(query)) {
+                        surahNumber = parseInt(query);
+                    } else {
+                        surahNumber = SURAH_NAMES[query];
+                    }
+
+                    if (surahNumber && surahNumber >= 1 && surahNumber <= 114) {
+                        const surahName = Object.keys(SURAH_NAMES).find(name => SURAH_NAMES[name] === surahNumber);
+                        const iframeSrc = `quran_viewer.html?sura=${surahName}`;
+                        const iframeHtml = `
+                            <strong>📖 سورة ${surahName} (${surahNumber})</strong><hr>
+                            <iframe src="${iframeSrc}" style="width:100%; height:450px; border:none; background:#fff; border-radius:10px;"></iframe>
+                            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">مُعرض عبر QURAN'S HOME</p>
+                        `;
+                        addMessage(iframeHtml, false);
+                        return;
+                    } else {
+                        addMessage("❌ لم أفهم اسم السورة. جرب: اتلو سورة البقرة", false);
+                        return;
+                    }
+                }
+
+                // ❌ إذا لم يكن أمر تلاوة، استخدم Groq
+                          // ✅ نرسل الرسالة إلى الـ Backend الخاص بنا على Vercel
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userMessage: message // نرسل فقط رسالة المستخدم
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponse = data.reply || "عذراً يا مولاي، حدث خطأ في الاتصال.";
+                addMessage(aiResponse, false);
+            } catch (error) {
+                addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
+            }
+            });
+
+            messageInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

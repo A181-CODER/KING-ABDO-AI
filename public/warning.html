@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💀 تحذير أمني</title>
+    <style>
+        body {
+            background-color: #0d1b2a;
+            color: #e0e1dd;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 30px;
+            direction: rtl;
+        }
+        pre {
+            font-size: 10px;
+            line-height: 1.0;
+            white-space: pre;
+            color: #3e92cc;
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2rem;
+            margin-top: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        .choices {
+            margin: 30px 0;
+        }
+        button {
+            background-color: #1b263b;
+            color: #41b3a3;
+            border: 2px solid #41b3a3;
+            padding: 12px 25px;
+            margin: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #41b3a3;
+            color: #0d1b2a;
+        }
+        #ascii-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <pre>
+      .--.
+     /    \
+    | .-. |
+    | | | |
+    \ `-' /
+     `---'
+   👑💀👑
+    </pre>
+    <h1>💀 تحذير أمني</h1>
+    <p>أنت تحاول الدخول إلى منطقة محظورة في بلاط الملك عبدو.</p>
+    <p>هذا الجزء من النظام محمي ومحجوب عن الأعين.</p>
+
+    <div class="choices">
+        <button onclick="proceed()">هل تريد التكملة؟</button>
+        <button onclick="goHome()">العودة للرئيسية</button>
+    </div>
+
+    <div id="ascii-container"></div>
+
+    <script>
+        function proceed() {
+            // ✅ عرض تمرير الغابة من ascii.live
+            const container = document.getElementById('ascii-container');
+            container.innerHTML = `
+                <p style="color:#3e92cc;">جارٍ تحميل الغابة السرية...</p>
+                <iframe src="https://ascii.live/forrest" style="width:100%; height:400px; border:none; background:#000; margin-top:20px;"></iframe>
+                <p style="font-size:0.9rem; color:#555;">(للمشاهدة الكاملة، استخدم CMD: curl ascii.live/forrest)</p>
+            `;
+        }
+
+        function goHome() {
+            // ✅ عرض رسالة ساخرة ثم العودة للرئيسية
+            document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; background:#0d1b2a; color:#e0e1dd; font-family:'Courier New',monospace;">
+                    <h1 style="color:#ff6b6b;">⚠️ لازم تبقي فلحوس جيلك يعني ارجع ياض</h1>
+                    <p>مش هاخليك تكمل بدون إذن الملك.</p>
+                    <a href="/" id="back-link" style="color:#3e92cc; text-decoration:none; font-size:1.2rem;">العودة للبلاط الملكي</a>
+                </div>
+            `;
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 3000); // يرجع تلقائي بعد 3 ثواني
+        }
+    </script>
+</body>
+</html>
