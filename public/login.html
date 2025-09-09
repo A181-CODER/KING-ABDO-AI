@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑  KING ABDO AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Amiri', serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1900ff, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes starsMove {
+            0% { background-position: 0 0, 50px 50px; }
+            100% { background-position: 1000px 1000px, 1050px 1050px; }
+        }
+
+        .login-container {
+            position: relative;
+            width: 90%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .crown-logo {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .crown-logo i {
+            font-size: 3.5rem;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.8); }
+        }
+
+        .crown-logo h2 {
+            color: #fff;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            background: linear-gradient(to right, #FFD700, #007BFF, #5D3FD3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            border: 1px solid transparent;
+        }
+
+        .form-group input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #0d1b2a;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #FFC300, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-signup {
+            background: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+
+        .btn-signup:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            color: #aaa;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            background: #FFD700;
+            color: #0d1b2a;
+            transform: translateY(-5px);
+        }
+
+        /* تأثيرات إضافية */
+        .login-container::after {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFD700, #007BFF, #5D3FD3, #FFD700);
+            background-size: 400%;
+            z-index: -1;
+            border-radius: 22px;
+            animation: borderGlow 5s linear infinite;
+            opacity: 0;
+        }
+
+        .login-container:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 400% 0; }
+        }
+
+        /* رسالة ترحيب */
+        .welcome-msg {
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="crown-logo">
+            <i class="fas fa-crown"></i>
+            <h2>KING ABDO AI </h2>
+            <h4>sign up</h4> 
+        </div>
+
+        <div class="form-group">
+            <label for="username">👑 اسم المستخدم</label>
+            <input type="text" id="username" placeholder="ادخل اسمك الكريم" autocomplete="username">
+        </div>
+        <div class="form-group">
+    <label for="email">📧 البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="ادخل بريدك " autocomplete="email">
+</div>
+        <div class="form-group">
+            <label for="password">🔐 كلمة المرور</label>
+            <input type="password" id="password" placeholder="ادخل كلمة المرور السرية" autocomplete="current-password">
+        </div>
+
+        <button class="btn btn-login" onclick="login()">تسجيل الدخول</button>
+        <button class="btn btn-signup" onclick="signup()">إنشاء حساب جديد</button>
+
+        <div class="divider">أو</div>
+
+        <div class="social-login">
+            <button class="social-btn"><i class="fab fa-google"></i></button>
+            <button class="social-btn"><i class="fab fa-facebook-f"></i></button>
+            <button class="social-btn"><i class="fab fa-apple"></i></button>
+        </div>
+
+        <p class="welcome-msg">مرحبًا بك في عالم الملك عبدو، حيث الذكاء يخدم العرش.</p>
+    </div>
+
+    <script>
+       function login() {
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // ✅ التحقق من أن الحقول غير فارغة
+    if (!username || !email || !password) {
+        alert('⚠️ الرجاء إدخال جميع البيانات.');
+        return;
+    }
+
+    // ✅ التحقق من صيغة البريد الإلكتروني
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('❌ Invalid email: صيغة البريد غير صحيحة.');
+        return;
+    }
+
+    // ✅ ❗ التحقق من أن البريد لا يحتوي على أي نقطة (.) قبل علامة @
+    const localPart = email.split('@')[0]; // الجزء قبل @
+    if (localPart.includes('.')) {
+        alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
+        return;
+    }
+
+    // ✅ التحقق من أن البريد ينتهي بـ @gmail.com أو @icloud.com أو @outlook.com
+    if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
+        alert('❌ Invalid email: ');
+        return;
+    }
+
+    // ✅ ✅ إنشاء رمز تحقق عشوائي فريد مكون من 4 أرقام
+    const verificationCode = Math.floor(1000 + Math.random() * 9000); // رقم بين 1000 و 9999
+
+    // ✅ عرض رمز التحقق للمستخدم
+    alert(`👑 يا ${username}، رمز التحقق الخاص بك هو: ${verificationCode}`);
+
+    // ✅ طلب إدخال رمز التحقق
+    const userCode = prompt('👑 أدخل رمز التحقق المكون من 4 أرقام:');
+
+    // ✅ التحقق من صحة الرمز
+    if (userCode == verificationCode) {
+        alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
+        window.location.href = 'index.html'; // أو أي صفحة تريدها
+    } else {
+        alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
+    }
+}
+    </script>
+</body>
+</html>
