@@ -177,6 +177,42 @@
 
     <script>
 
+        // ✅ علامة مائية رقمية — لا يمكن إزالتها بسهولة
+const __KING_ABDO_LICENSE__ = {
+    owner: "Abd Al-Rhman Mohamed",
+    project: "KING ABDO AI",
+    license: "AGPL-3.0",
+    originalUrl: "https://king-abdo-ai-26dd.vercel.app/",
+    timestamp: Date.now()
+};
+
+// ✅ منع حذف أو تعديل العلامة
+Object.freeze(__KING_ABDO_LICENSE__);
+
+// ✅ إرسال العلامة للخادم للتحقق من الأصالة
+async function verifyLicense() {
+    try {
+        const response = await fetch('/api/license-check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ license: __KING_ABDO_LICENSE__ })
+        });
+
+        const result = await response.json();
+        if (!result.valid) {
+            // ✅ تفعيل "لعنة الملك"
+            activateKingsCurse();
+        }
+    } catch (err) {
+        console.error('فشل في التحقق من الترخيص:', err);
+        // ✅ في حالة فشل الاتصال — نفترض أنه نسخة غير شرعية
+        activateKingsCurse();
+    }
+}
+
+// ✅ التحقق من الترخيص عند تحميل الصفحة
+verifyLicense();
+        
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
 if (!localStorage.getItem('kingAbdoLoggedIn')) {
     alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
