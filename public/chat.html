@@ -176,45 +176,7 @@
     </div>
 
     <script>
-
-
-function activateKingsCurse() {
-    document.body.innerHTML = `
-        <div style="text-align:center; padding:50px; background:#000; color:#ff0000; font-family:'Courier New',monospace;">
-            <h1 style="font-size:4rem; animation: blink 1s infinite;">☠️</h1>
-            <h2 style="color:#ff6b6b;">لعنة الملك عبدو!</h2>
-            <p style="font-size:1.2rem; margin:20px 0;">
-                أنت تحاول استخدام مشروع ملكي دون إذن!
-            </p>
-            <p style="font-size:1rem;">
-                هذا المشروع محمي بحقوق الملكية الفكرية © 2024.
-                <br>
-               NOW YOU'RE A BIG FOOL
-            </p>
-            <p style="font-size:0.9rem; color:#aaa; margin-top:30px;">
-              ربنا ينتقم منك
-            </p>
-        </div>
-    `;
-    document.body.style.backgroundColor = '#000';
-
-    // ✅ منع أي تفاعل
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => e.preventDefault());
-    document.addEventListener('click', e => e.preventDefault());
-
-    // ✅ تكرار اللعنة كل 5 ثواني
-    setInterval(() => {
-        document.body.innerHTML = `
-            <div style="text-align:center; padding:50px; background:#000; color:#ff0000; font-family:'Courier New',monospace;">
-                <h1 style="font-size:4rem; animation: blink 1s infinite;">☠️</h1>
-                <h2 style="color:#ff6b6b;">اللعنة مستمرة!</h2>
-                <p>اتصل بالملك فورًا لرفع اللعنة.</p>
-            </div>
-        `;
-    }, 5000);
-}
-        
+    
         // ✅ علامة مائية رقمية — لا يمكن إزالتها بسهولة
 const __KING_ABDO_LICENSE__ = {
     owner: "Abd Al-Rhman Mohamed",
