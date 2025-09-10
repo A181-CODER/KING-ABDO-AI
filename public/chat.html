@@ -176,6 +176,12 @@
     </div>
 
     <script>
+
+        // ✅ التحقق من أن المستخدم دخل من صفحة Login
+if (!localStorage.getItem('kingAbdoLoggedIn')) {
+    alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
+    window.location.href = 'index.html'; // يرجعه لصفحة تسجيل الدخول
+}
     
         // خريطة أسماء السور
         const SURAH_NAMES = {
