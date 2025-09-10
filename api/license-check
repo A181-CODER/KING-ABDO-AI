@@ -1,0 +1,26 @@
+// 📁 api/license-check.js
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    try {
+        const { license } = req.body;
+
+        // ✅ التحقق من أن العلامة المائية أصلية
+        const isValid = 
+            license.owner === "Abd Al-Rhman GHAZY" &&
+            license.project === "KING ABDO AI" &&
+            license.license === "AGPL-3.0" &&
+            license.originalUrl === "https://king-abdo-ai-26dd.vercel.app/";
+
+        if (isValid) {
+            return res.status(200).json({ valid: true });
+        } else {
+            return res.status(200).json({ valid: false });
+        }
+
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
