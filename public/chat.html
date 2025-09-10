@@ -276,6 +276,44 @@ if (!localStorage.getItem('kingAbdoLoggedIn')) {
                 addMessage(message, true);
                 messageInput.value = '';
 
+                // ✅ كشف أمر البرمجة الديناميكي
+const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z]+)/i);
+if (programmingMatch) {
+    const task = programmingMatch[2].trim(); // المهمة (مثل: آلة حاسبة)
+    const language = programmingMatch[4].toLowerCase(); // اللغة (مثل: c++)
+
+    // ✅ إرسال طلب لـ Groq API لإنشاء الكود
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userMessage: `أنشئ كود ${task} بلغة ${language}. لا تشرح، فقط أعطني الكود جاهزًا للنسخ. استخدم تعليقات بالعربية لتوضيح الأجزاء المهمة.`
+            })
+        });
+
+        const data = await response.json();
+        const aiReply = data.reply || "عذراً يا مولاي، حدث خطأ في إنشاء الكود.";
+
+        // ✅ عرض الكود في iframe أنيق
+        const encodedCode = encodeURIComponent(aiReply);
+        const iframeHtml = `
+            <strong>👑 كود ملكي ديناميكي بلغة ${language.toUpperCase()}</strong><hr>
+            <iframe src="data:text/plain;charset=utf-8,${encodedCode}" 
+                    style="width:100%; height:450px; border:none; background:#000; color:#0f0; font-family:monospace; padding:10px; border-radius:10px; direction:ltr; text-align:left;">
+            </iframe>
+            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">KING ABDO CODING</p>
+        `;
+        addMessage(iframeHtml, false);
+        return;
+    } catch (error) {
+        addMessage("عذراً يا مولاي، حدث خطأ في إنشاء الكود.", false);
+        return;
+    }
+}
+                
                 // ✅ كشف أمر التلاوة
                 const surahMatch = message.match(/(اتلُ?|اقرأ|اكتب لي|تلاوة|سورة)\s+([\u0600-\u06FF0-9]+)/i);
                 if (surahMatch) {
