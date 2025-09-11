@@ -86,7 +86,6 @@
             </div>
             <p class="text-lg text-gray-600">نظام المحادثة الذكي الملكي</p>
         </header>
-
         <div class="bg-white rounded-xl shadow-xl overflow-hidden">
             <div class="p-4 flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white">
                 <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
@@ -97,7 +96,6 @@
                     <p class="text-yellow-200 text-sm">متصل الآن</p>
                 </div>
             </div>
-
             <div id="messages" class="h-96 overflow-y-auto p-4 space-y-4">
                 <div class="message-enter flex justify-start">
                     <div class="max-w-xs md:max-w-md lg:max-w-lg bg-gray-100 rounded-xl p-3">
@@ -116,9 +114,6 @@
                         <p class="text-xs text-gray-500 mt-1 text-left">الآن</p>
                     </div>
             </div>
-
-             
-
             <div class="border-t border-gray-200 p-4 bg-gray-50">
                 <div class="flex items-center">
                     <button id="attachBtn" class="w-10 h-10 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 ml-2">
@@ -128,7 +123,7 @@
                     <input 
                         id="messageInput"
                         type="text" 
-                        placeholder="اكتب: اتلو سورة الكهف..." 
+                        placeholder="اكتب: اتلو سورة الكهف أو أنشئ آلة حاسبة بلغة C++" 
                         class="flex-1 border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                     <button id="sendButton" class="w-10 h-10 rounded-full colorful-gradient text-white flex items-center justify-center">
@@ -138,7 +133,6 @@
                 <p class="text-xs text-gray-500 mt-2 text-center">KING ABDO AI يستخدم لتقديم إجابات سريعة ودقيقة</p>
             </div>
         </div>
-
         <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="bg-white p-4 rounded-xl shadow-md text-center">
                 <div class="text-blue-600 text-2xl mb-2">
@@ -168,57 +162,86 @@
                 <h3 class="font-bold text-gray-800">آمن وخاص ودقيق</h3>
                 <p class="text-gray-600 text-sm mt-1">حماية كاملة لخصوصيتكم</p>
             </div>
-            
         </div>
         <div style="text-align: center; font-family: 'Arial', sans-serif; font-size: 14px; color: #ffe100; padding: 10px;">
             جميع الحقوق محفوظة لKING ABDO ©
         </div>
     </div>
-
     <script>
-    
         // ✅ علامة مائية رقمية — لا يمكن إزالتها بسهولة
-const __KING_ABDO_LICENSE__ = {
-    owner: "Abd Al-Rhman Mohamed",
-    project: "KING ABDO AI",
-    license: "AGPL-3.0",
-    originalUrl: "https://king-abdo-ai-26dd.vercel.app/",
-    timestamp: Date.now()
-};
-
-// ✅ منع حذف أو تعديل العلامة
-Object.freeze(__KING_ABDO_LICENSE__);
-
-// ✅ إرسال العلامة للخادم للتحقق من الأصالة
-async function verifyLicense() {
-    try {
-        const response = await fetch('/api/license-check', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ license: __KING_ABDO_LICENSE__ })
-        });
-
-        const result = await response.json();
-        if (!result.valid) {
-            // ✅ تفعيل "لعنة الملك"
-            activateKingsCurse();
+        const __KING_ABDO_LICENSE__ = {
+            owner: "Abd Al-Rhman Mohamed",
+            project: "KING ABDO AI",
+            license: "AGPL-3.0",
+            originalUrl: "https://king-abdo-ai-26dd.vercel.app/",
+            timestamp: Date.now()
+        };
+        // ✅ منع حذف أو تعديل العلامة
+        Object.freeze(__KING_ABDO_LICENSE__);
+        // ✅ إرسال العلامة للخادم للتحقق من الأصالة
+        async function verifyLicense() {
+            try {
+                const response = await fetch('/api/license-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license: __KING_ABDO_LICENSE__ })
+                });
+                const result = await response.json();
+                if (!result.valid) {
+                    // ✅ تفعيل "لعنة الملك"
+                    activateKingsCurse();
+                }
+            } catch (err) {
+                console.error('فشل في التحقق من الترخيص:', err);
+                // ✅ في حالة فشل الاتصال — نفترض أنه نسخة غير شرعية
+                activateKingsCurse();
+            }
         }
-    } catch (err) {
-        console.error('فشل في التحقق من الترخيص:', err);
-        // ✅ في حالة فشل الاتصال — نفترض أنه نسخة غير شرعية
-        activateKingsCurse();
-    }
-}
+        // ✅ التحقق من الترخيص عند تحميل الصفحة
+        verifyLicense();
 
-// ✅ التحقق من الترخيص عند تحميل الصفحة
-verifyLicense();
-        
+        // ✅ تفعيل "لعنة الملك"
+        function activateKingsCurse() {
+            document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; background:#000; color:#ff0000; font-family:'Courier New',monospace;">
+                    <h1 style="font-size:4rem; animation: blink 1s infinite;">☠️</h1>
+                    <h2 style="color:#ff6b6b;">لعنة الملك عبدو!</h2>
+                    <p style="font-size:1.2rem; margin:20px 0;">
+                        أنت تحاول استخدام مشروع ملكي دون إذن!
+                    </p>
+                    <p style="font-size:1rem;">
+                        هذا المشروع محمي بحقوق الملكية الفكرية © 2024.
+                        <br>
+                        أي استخدام تجاري يتطلب نشر الكود المعدل تحت رخصة AGPL-3.0.
+                    </p>
+                    <p style="font-size:0.9rem; color:#aaa; margin-top:30px;">
+                        للتواصل مع الملك: abdalrhmanmohmaed717@gmail.com
+                    </p>
+                </div>
+            `;
+            document.body.style.backgroundColor = '#000';
+            // ✅ منع أي تفاعل
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => e.preventDefault());
+            document.addEventListener('click', e => e.preventDefault());
+            // ✅ تكرار اللعنة كل 5 ثواني
+            setInterval(() => {
+                document.body.innerHTML = `
+                    <div style="text-align:center; padding:50px; background:#000; color:#ff0000; font-family:'Courier New',monospace;">
+                        <h1 style="font-size:4rem; animation: blink 1s infinite;">☠️</h1>
+                        <h2 style="color:#ff6b6b;">اللعنة مستمرة!</h2>
+                        <p>اتصل بالملك فورًا لرفع اللعنة.</p>
+                    </div>
+                `;
+            }, 5000);
+        }
+
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
-if (!localStorage.getItem('kingAbdoLoggedIn')) {
-    alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
-    window.location.href = 'index.html'; // يرجعه لصفحة تسجيل الدخول
-}
-    
+        if (!localStorage.getItem('kingAbdoLoggedIn')) {
+            alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
+            window.location.href = 'index.html'; // يرجعه لصفحة تسجيل الدخول
+        }
+
         // خريطة أسماء السور
         const SURAH_NAMES = {
             "الفاتحة": 1, "البقرة": 2, "آل عمران": 3, "النساء": 4, "المائدة": 5,
@@ -272,60 +295,157 @@ if (!localStorage.getItem('kingAbdoLoggedIn')) {
             sendButton.addEventListener('click', async function () {
                 const message = messageInput.value.trim();
                 if (!message) return;
-
                 addMessage(message, true);
                 messageInput.value = '';
 
-                              // ❌ إذا لم يكن أمر تلاوة، استخدم Groq
-                          // ✅ نرسل الرسالة إلى الـ Backend الخاص بنا على Vercel
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userMessage: message // نرسل فقط رسالة المستخدم
-                    })
-                });
+                // ✅ كشف أمر البرمجة الديناميكي
+                const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z#\s+]+)/i);
+                if (programmingMatch) {
+                    const task = programmingMatch[2].trim();
+                    const language = programmingMatch[4].toLowerCase().trim();
 
-                const data = await response.json();
-                const aiResponse = data.reply || "عذراً يا مولاي، حدث خطأ في الاتصال.";
-                addMessage(aiResponse, false);
-            } catch (error) {
-                addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
-            }
+                    addMessage("🧠 ساحر الكود يتصل بالذكاء الاصطناعي... انتظر...", false);
+
+                    try {
+                        const response = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                userMessage: `أنت مساعد برمجي محترف. مهمتك: توليد كود كامل، نظيف، وقابل للتشغيل فورًا بدون أي تعليقات أو شروحات زائدة.
+اللغة المطلوبة: ${language}
+الطلب: ${task}
+⚠️ التعليمات:
+- لا تكتب أي شيء قبل أو بعد الكود.
+- لا تستخدم Markdown (مثل: \`\`\`).
+- لا تكتب تعليقات أو شرح.
+- إذا كان طلب HTML/CSS/JS: اجعله ملف HTML كامل (مع DOCTYPE, head, body).
+- إذا كان طلب C++, Java, Python, Go, Rust, C#...: اجعله كود كامل قابل للتشغيل (مع main() أو class أو function).
+- لا تستخدم أي مكتبات خارجية إلا إذا طُلب.
+- اجعل الكود متوافقًا مع البيئة الافتراضية.`
+                            })
+                        });
+
+                        const data = await response.json();
+                        let generatedCode = data.reply || "";
+
+                        generatedCode = generatedCode
+                            .replace(/^```[a-z]*\n/, '')
+                            .replace(/\n```$/, '')
+                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
+                            .trim();
+
+                        if (!generatedCode) {
+                            addMessage("❌ لم يتم توليد كود صالح. ربما الطلب غير واضح.", false);
+                            return;
+                        }
+
+                        const iframeHtml = `
+                            <div style="display: flex; gap: 20px; width: 100%; margin-top: 20px; direction: ltr;">
+                                <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px; color: #10b981; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow: auto; max-height: 400px;">
+                                    <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">📜 الكود المُنشأ (${language})</h3>
+                                    <pre style="white-space: pre-wrap; word-wrap: break-word;">${generatedCode}</pre>
+                                </div>
+                                <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px;">
+                                    <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">👁️ العرض الحي</h3>
+                                    <iframe style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;" srcdoc="${encodeURIComponent(generatedCode)}"></iframe>
+                                </div>
+                            </div>
+                            <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #888;">كود ملكي من بلاط الملك عبدو</p>
+                        `;
+                        addMessage(iframeHtml, false);
+                        return;
+                    } catch (error) {
+                        addMessage("❌ حدث خطأ أثناء التوليد. تأكد من صحة الطلب.", false);
+                        return;
+                    }
+                }
+
+                // ✅ كشف أمر التلاوة
+                const surahMatch = message.match(/(اتلُ?|اقرأ|اكتب لي|تلاوة|سورة)\s+([\u0600-\u06FF0-9]+)/i);
+                if (surahMatch) {
+                    const query = surahMatch[2].trim();
+                    let surahNumber = null;
+
+                    if (!isNaN(query)) {
+                        surahNumber = parseInt(query);
+                    } else {
+                        surahNumber = SURAH_NAMES[query];
+                    }
+
+                    if (surahNumber && surahNumber >= 1 && surahNumber <= 114) {
+                        const surahName = Object.keys(SURAH_NAMES).find(name => SURAH_NAMES[name] === surahNumber);
+                        const iframeSrc = `quran_viewer.html?sura=${surahName}`;
+                        const iframeHtml = `
+                            <strong>📖 سورة ${surahName} (${surahNumber})</strong><hr>
+                            <iframe src="${iframeSrc}" style="width:100%; height:450px; border:none; background:#fff; border-radius:10px;"></iframe>
+                            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">مُعرض عبر QURAN'S HOME</p>
+                        `;
+                        addMessage(iframeHtml, false);
+                        return;
+                    } else {
+                        addMessage("❌ لم أفهم اسم السورة. جرب: اتلو سورة البقرة", false);
+                        return;
+                    }
+                }
+
+                // ❌ إذا لم يكن أمر تلاوة أو برمجة، استخدم Groq للدردشة العادية
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userMessage: message
+                        })
+                    });
+
+                    const data = await response.json();
+                    const aiResponse = data.reply || "عذراً يا مولاي، حدث خطأ في الاتصال.";
+                    addMessage(aiResponse, false);
+                } catch (error) {
+                    addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
+                }
             });
-// منع زر الماوس الأيمن (Right-Click) — بصمت
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        // لا يوجد alert — المستخدم مش هيفهم إيه اللي حصل
-    });
 
-    // منع مفاتيح الاختصار — بصمت
-    document.addEventListener('keydown', function(e) {
-        // F12
-        if (e.key === 'F12') {
-            e.preventDefault();
-            return false;
-        }
-        // Ctrl+Shift+I, Ctrl+Shift+J
-        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) {
-            e.preventDefault();
-            return false;
-        }
-        // Ctrl+U (عرض المصدر)
-        if (e.ctrlKey && e.key === 'u') {
-            e.preventDefault();
-            return false;
-        }
-        // Ctrl+Shift+C (فتح Console في بعض المتصفحات)
-        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-            e.preventDefault();
-            return false;
-        }
-    });
-        
+            messageInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+
+            // ✅ منع زر الماوس الأيمن (Right-Click) — بصمت
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // ✅ منع مفاتيح الاختصار — بصمت
+            document.addEventListener('keydown', function(e) {
+                // F12
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    return false;
+                }
+                // Ctrl+Shift+I, Ctrl+Shift+J
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) {
+                    e.preventDefault();
+                    return false;
+                }
+                // Ctrl+U (عرض المصدر)
+                if (e.ctrlKey && e.key === 'u') {
+                    e.preventDefault();
+                    return false;
+                }
+                // Ctrl+Shift+C (فتح Console في بعض المتصفحات)
+                if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
     </script>
 </body>
 </html>
