@@ -276,124 +276,26 @@ if (!localStorage.getItem('kingAbdoLoggedIn')) {
                 addMessage(message, true);
                 messageInput.value = '';
 
-                               // ✅ كشف أمر البرمجة الديناميكي
-                const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z#\s+]+)/i);
-                if (programmingMatch) {
-                    const task = programmingMatch[2].trim();
-                    const language = programmingMatch[4].toLowerCase().trim();
+                              // ❌ إذا لم يكن أمر تلاوة، استخدم Groq
+                          // ✅ نرسل الرسالة إلى الـ Backend الخاص بنا على Vercel
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userMessage: message // نرسل فقط رسالة المستخدم
+                    })
+                });
 
-                    addMessage("🧠 ساحر الكود يتصل بالذكاء الاصطناعي... انتظر...", false);
-
-                    try {
-                        const response = await fetch('/api/chat', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                userMessage: `أنت مساعد برمجي محترف. مهمتك: توليد كود كامل، نظيف، وقابل للتشغيل فورًا بدون أي تعليقات أو شروحات زائدة.
-اللغة المطلوبة: ${language}
-الطلب: ${task}
-⚠️ التعليمات:
-- لا تكتب أي شيء قبل أو بعد الكود.
-- لا تستخدم Markdown (مثل: \`\`\`).
-- لا تكتب تعليقات أو شرح.
-- إذا كان طلب HTML/CSS/JS: اجعله ملف HTML كامل (مع DOCTYPE, head, body).
-- إذا كان طلب C++, Java, Python, Go, Rust, C#...: اجعله كود كامل قابل للتشغيل (مع main() أو class أو function).
-- لا تستخدم أي مكتبات خارجية إلا إذا طُلب.
-- اجعل الكود متوافقًا مع البيئة الافتراضية.`
-                            })
-                        });
-
-                        const data = await response.json();
-                        let generatedCode = data.reply || "";
-
-                        generatedCode = generatedCode
-                            .replace(/^```[a-z]*\n/, '')
-                            .replace(/\n```$/, '')
-                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
-                            .trim();
-
-                        if (!generatedCode) {
-                            addMessage("❌ لم يتم توليد كود صالح. ربما الطلب غير واضح.", false);
-                            return;
-                        }
-
-                        const iframeHtml = `
-                            <div style="display: flex; gap: 20px; width: 100%; margin-top: 20px; direction: ltr;">
-                                <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px; color: #10b981; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow: auto; max-height: 400px;">
-                                    <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">📜 الكود المُنشأ (${language})</h3>
-                                    <pre style="white-space: pre-wrap; word-wrap: break-word;">${generatedCode}</pre>
-                                </div>
-                                <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px;">
-                                    <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">👁️ العرض الحي</h3>
-                                    <iframe style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;" srcdoc="${encodeURIComponent(generatedCode)}"></iframe>
-                                </div>
-                            </div>
-                            <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #888;">كود ملكي من بلاط الملك عبدو</p>
-                        `;
-                        addMessage(iframeHtml, false);
-                        return;
-                    } catch (error) {
-                        addMessage("❌ حدث خطأ أثناء التوليد. تأكد من صحة الطلب.", false);
-                        return;
-                    }
-                }
-
-                // ✅ كشف أمر التلاوة
-                const surahMatch = message.match(/(اتلُ?|اقرأ|اكتب لي|تلاوة|سورة)\s+([\u0600-\u06FF0-9]+)/i);
-                if (surahMatch) {
-                    const query = surahMatch[2].trim();
-                    let surahNumber = null;
-
-                    if (!isNaN(query)) {
-                        surahNumber = parseInt(query);
-                    } else {
-                        surahNumber = SURAH_NAMES[query];
-                    }
-
-                    if (surahNumber && surahNumber >= 1 && surahNumber <= 114) {
-                        const surahName = Object.keys(SURAH_NAMES).find(name => SURAH_NAMES[name] === surahNumber);
-                        const iframeSrc = `quran_viewer.html?sura=${surahName}`;
-                        const iframeHtml = `
-                            <strong>📖 سورة ${surahName} (${surahNumber})</strong><hr>
-                            <iframe src="${iframeSrc}" style="width:100%; height:450px; border:none; background:#fff; border-radius:10px;"></iframe>
-                            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">مُعرض عبر QURAN'S HOME</p>
-                        `;
-                        addMessage(iframeHtml, false);
-                        return;
-                    } else {
-                        addMessage("❌ لم أفهم اسم السورة. جرب: اتلو سورة البقرة", false);
-                        return;
-                    }
-                }
-
-                // ❌ إذا لم يكن أمر تلاوة أو برمجة، استخدم Groq للدردشة العادية
-                try {
-                    const response = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            userMessage: message
-                        })
-                    });
-
-                    const data = await response.json();
-                    const aiResponse = data.reply || "عذراً يا مولاي، حدث خطأ في الاتصال.";
-                    addMessage(aiResponse, false);
-                } catch (error) {
-                    addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
-                }
-
-            messageInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    sendButton.click();
-                }
+                const data = await response.json();
+                const aiResponse = data.reply || "عذراً يا مولاي، حدث خطأ في الاتصال.";
+                addMessage(aiResponse, false);
+            } catch (error) {
+                addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
+            }
             });
-        });
-
 // منع زر الماوس الأيمن (Right-Click) — بصمت
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
