@@ -276,81 +276,14 @@ if (!localStorage.getItem('kingAbdoLoggedIn')) {
                 addMessage(message, true);
                 messageInput.value = '';
 
-                // ✅ كشف أمر البرمجة الديناميكي
-const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z]+)/i);
-if (programmingMatch) {
-    const task = programmingMatch[2].trim(); // المهمة (مثل: آلة حاسبة)
-    const language = programmingMatch[4].toLowerCase(); // اللغة (مثل: c++)
-
-    // ✅ إرسال طلب لـ Groq API لإنشاء الكود
-    try {
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userMessage: `أنشئ كود ${task} بلغة ${language}. لا تشرح، فقط أعطني الكود جاهزًا للنسخ. استخدم تعليقات بالعربية لتوضيح الأجزاء المهمة.`
-            })
-        });
-
-        const data = await response.json();
-        const aiReply = data.reply || "عذراً يا مولاي، حدث خطأ في إنشاء الكود.";
-
-        // ✅ عرض الكود في iframe أنيق
-        const encodedCode = encodeURIComponent(aiReply);
-        const iframeHtml = `
-            <strong>👑 كود ملكي ديناميكي بلغة ${language.toUpperCase()}</strong><hr>
-            <iframe src="data:text/plain;charset=utf-8,${encodedCode}" 
-                    style="width:100%; height:450px; border:none; background:#000; color:#0f0; font-family:monospace; padding:10px; border-radius:10px; direction:ltr; text-align:left;">
-            </iframe>
-            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">KING ABDO CODING</p>
-        `;
-        addMessage(iframeHtml, false);
-        return;
-    } catch (error) {
-        addMessage("عذراً يا مولاي، حدث خطأ في إنشاء الكود.", false);
-        return;
-    }
-}
-                
-                // ✅ كشف أمر التلاوة
-                const surahMatch = message.match(/(اتلُ?|اقرأ|اكتب لي|تلاوة|سورة)\s+([\u0600-\u06FF0-9]+)/i);
-                if (surahMatch) {
-                    const query = surahMatch[2].trim();
-                    let surahNumber = null;
-
-                    if (!isNaN(query)) {
-                        surahNumber = parseInt(query);
-                    } else {
-                        surahNumber = SURAH_NAMES[query];
-                    }
-
-                    if (surahNumber && surahNumber >= 1 && surahNumber <= 114) {
-                        const surahName = Object.keys(SURAH_NAMES).find(name => SURAH_NAMES[name] === surahNumber);
-                        const iframeSrc = `quran_viewer.html?sura=${surahName}`;
-                        const iframeHtml = `
-                            <strong>📖 سورة ${surahName} (${surahNumber})</strong><hr>
-                            <iframe src="${iframeSrc}" style="width:100%; height:450px; border:none; background:#fff; border-radius:10px;"></iframe>
-                            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#888;">مُعرض عبر QURAN'S HOME</p>
-                        `;
-                        addMessage(iframeHtml, false);
-                        return;
-                    } else {
-                        addMessage("❌ لم أفهم اسم السورة. جرب: اتلو سورة البقرة", false);
-                        return;
-                    }
-                }
-
                                // ✅ كشف أمر البرمجة الديناميكي
                 const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z#\s+]+)/i);
                 if (programmingMatch) {
-                    const task = programmingMatch[2].trim(); // المهمة (مثل: آلة حاسبة)
-                    const language = programmingMatch[4].toLowerCase().trim(); // اللغة (مثل: c++)
+                    const task = programmingMatch[2].trim();
+                    const language = programmingMatch[4].toLowerCase().trim();
 
                     addMessage("🧠 ساحر الكود يتصل بالذكاء الاصطناعي... انتظر...", false);
 
-                    // ✅ إرسال طلب لـ Groq API لإنشاء الكود
                     try {
                         const response = await fetch('/api/chat', {
                             method: 'POST',
@@ -375,11 +308,10 @@ if (programmingMatch) {
                         const data = await response.json();
                         let generatedCode = data.reply || "";
 
-                        // ✅ تنظيف الكود من Markdown أو رموز غير ضرورية
                         generatedCode = generatedCode
                             .replace(/^```[a-z]*\n/, '')
                             .replace(/\n```$/, '')
-                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '') // تحطيم التعليقات
+                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
                             .trim();
 
                         if (!generatedCode) {
@@ -387,15 +319,12 @@ if (programmingMatch) {
                             return;
                         }
 
-                        // ✅ عرض الكود والعرض الحي جنب بعض
                         const iframeHtml = `
                             <div style="display: flex; gap: 20px; width: 100%; margin-top: 20px; direction: ltr;">
-                                <!-- الكود المُنشأ -->
                                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px; color: #10b981; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow: auto; max-height: 400px;">
                                     <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">📜 الكود المُنشأ (${language})</h3>
                                     <pre style="white-space: pre-wrap; word-wrap: break-word;">${generatedCode}</pre>
                                 </div>
-                                <!-- العرض الحي -->
                                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px;">
                                     <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">👁️ العرض الحي</h3>
                                     <iframe style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;" srcdoc="${encodeURIComponent(generatedCode)}"></iframe>
