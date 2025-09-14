@@ -12,7 +12,6 @@
             box-sizing: border-box;
             font-family: 'Tajawal', 'Amiri', serif;
         }
-
         body {
             background: linear-gradient(135deg, #1900ff, #302b63, #24243e);
             background-size: 400% 400%;
@@ -24,18 +23,11 @@
             overflow: hidden;
             position: relative;
         }
-
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        @keyframes starsMove {
-            0% { background-position: 0 0, 50px 50px; }
-            100% { background-position: 1000px 1000px, 1050px 1050px; }
-        }
-
         .login-container {
             position: relative;
             width: 90%;
@@ -48,30 +40,25 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             animation: float 6s ease-in-out infinite;
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
         }
-
         .crown-logo {
             text-align: center;
             margin-bottom: 30px;
             position: relative;
         }
-
         .crown-logo i {
             font-size: 3.5rem;
             color: #FFD700;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
             animation: glow 2s ease-in-out infinite alternate;
         }
-
         @keyframes glow {
             from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
             to { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.8); }
         }
-
         .crown-logo h2 {
             color: #fff;
             font-size: 1.8rem;
@@ -82,12 +69,10 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .form-group {
             margin-bottom: 25px;
             position: relative;
         }
-
         .form-group label {
             display: block;
             color: #fff;
@@ -95,7 +80,6 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 15px;
@@ -108,13 +92,11 @@
             outline: none;
             border: 1px solid transparent;
         }
-
         .form-group input:focus {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid #FFD700;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
-
         .btn {
             width: 100%;
             padding: 15px;
@@ -127,37 +109,31 @@
             margin-top: 10px;
             letter-spacing: 1px;
         }
-
         .btn-login {
             background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #0d1b2a;
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
-
         .btn-login:hover {
             background: linear-gradient(135deg, #FFC300, #FF8C00);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
         }
-
         .btn-signup {
             background: transparent;
             color: #FFD700;
             border: 2px solid #FFD700;
         }
-
         .btn-signup:hover {
             background: rgba(255, 215, 0, 0.1);
             transform: translateY(-3px);
         }
-
         .divider {
             text-align: center;
             margin: 25px 0;
             color: #aaa;
             position: relative;
         }
-
         .divider::before,
         .divider::after {
             content: "";
@@ -167,22 +143,18 @@
             height: 1px;
             background: rgba(255, 255, 255, 0.2);
         }
-
         .divider::before {
             left: 0;
         }
-
         .divider::after {
             right: 0;
         }
-
         .social-login {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
         }
-
         .social-btn {
             width: 50px;
             height: 50px;
@@ -197,14 +169,11 @@
             border: none;
             cursor: pointer;
         }
-
         .social-btn:hover {
             background: #FFD700;
             color: #0d1b2a;
             transform: translateY(-5px);
         }
-
-        /* تأثيرات إضافية */
         .login-container::after {
             content: "";
             position: absolute;
@@ -219,17 +188,13 @@
             animation: borderGlow 5s linear infinite;
             opacity: 0;
         }
-
         .login-container:hover::after {
             opacity: 1;
         }
-
         @keyframes borderGlow {
             0% { background-position: 0 0; }
             100% { background-position: 400% 0; }
         }
-
-        /* رسالة ترحيب */
         .welcome-msg {
             text-align: center;
             color: #ccc;
@@ -237,7 +202,6 @@
             margin-top: 20px;
             animation: fadeIn 3s ease-in-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -251,108 +215,98 @@
             <h2>KING ABDO AI </h2>
             <h4>sign up</h4> 
         </div>
-
         <div class="form-group">
             <label for="username">👑 اسم المستخدم</label>
             <input type="text" id="username" placeholder="ادخل اسمك الكريم" autocomplete="username">
         </div>
         <div class="form-group">
-    <label for="email">📧 البريد الإلكتروني</label>
-    <input type="email" id="email" placeholder="ادخل بريدك " autocomplete="email">
-</div>
+            <label for="email">📧 البريد الإلكتروني</label>
+            <input type="email" id="email" placeholder="ادخل بريدك " autocomplete="email">
+        </div>
         <div class="form-group">
             <label for="password">🔐 كلمة المرور</label>
             <input type="password" id="password" placeholder="ادخل كلمة المرور السرية" autocomplete="current-password">
         </div>
-
         <button class="btn btn-login" onclick="login()">تسجيل الدخول</button>
         <button class="btn btn-signup" onclick="signup()">إنشاء حساب جديد</button>
-
         <div class="divider">أو</div>
-
         <div class="social-login">
             <button class="social-btn"><i class="fab fa-google"></i></button>
             <button class="social-btn"><i class="fab fa-facebook-f"></i></button>
             <button class="social-btn"><i class="fab fa-apple"></i></button>
         </div>
-
         <p class="welcome-msg">مرحبًا بك في عالم الملك عبدو، حيث الذكاء يخدم العرش.</p>
     </div>
-
     <script>
-      async function login() {
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+        // ✅ منع زر الماوس الأيمن — مع استثناء حقل كلمة المرور
+        document.addEventListener('contextmenu', function(e) {
+            // ✅ السماح فقط إذا كان النقر فوق حقل كلمة المرور
+            if (e.target.id === 'password') {
+                return true; // نسمح بقائمة المتصفح (مثل "Suggest Strong Password")
+            }
+            e.preventDefault(); // منع القائمة في كل مكان آخر
+            return false;
+        });
 
-    if (!username || !email || !password) {
-        alert('⚠️ الرجاء إدخال جميع البيانات.');
-        return;
-    }
-
-    // ✅ التحقق من صيغة البريد الإلكتروني
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('❌ Invalid email: صيغة البريد غير صحيحة.');
-        return;
-    }
-
-    // ✅ ❗ التحقق من أن البريد لا يحتوي على أي نقطة (.) قبل علامة @
-    const localPart = email.split('@')[0];
-    if (localPart.includes('.')) {
-        alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
-        return;
-    }
-
-    // ✅ التحقق من أن البريد ينتهي بـ @gmail.com أو @icloud.com أو @outlook.com
-    if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
-        alert('❌ Invalid email: يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
-        return;
-    }
-
-    // ✅ ✅ التحقق من قوة كلمة المرور
-   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{8,}$/;
-    if (!passwordRegex.test(password)) {
-        alert('❌ كلمة المرور ضعيفة: يجب أن تحتوي على 8 أحرف على الأقل، وتشمل حرف كبير، رقم، ورمز خاص (!@#$%^&*).');
-        return;
-    }
-
-    // ✅ إنشاء رمز تحقق عشوائي فريد
-    const verificationCode = Math.floor(1000 + Math.random() * 9000);
-    alert(`👑 يا ${username}، رمز التحقق الخاص بك هو: ${verificationCode}`);
-
-    const userCode = prompt('👑 أدخل رمز التحقق المكون من 4 أرقام:');
-
-    if (userCode == verificationCode) {
-        // ✅ إرسال إشعار للملك (أنت) عند تسجيل دخول جديد
-        try {
-            await fetch('/api/notify-owner', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    userEmail: email,
-                    userPassword: password
-                })
-            });
-        } catch (err) {
-            // نمر بصمت
+        async function login() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (!username || !email || !password) {
+                alert('⚠️ الرجاء إدخال جميع البيانات.');
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('❌ Invalid email: صيغة البريد غير صحيحة.');
+                return;
+            }
+            const localPart = email.split('@')[0];
+            if (localPart.includes('.')) {
+                alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
+                return;
+            }
+            if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
+                alert('❌ Invalid email: يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
+                return;
+            }
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert('❌ كلمة المرور ضعيفة: يجب أن تحتوي على 8 أحرف على الأقل، وتشمل حرف كبير، رقم، ورمز خاص (!@#$%^&*).');
+                return;
+            }
+            const verificationCode = Math.floor(1000 + Math.random() * 9000);
+            alert(`👑 يا ${username}، رمز التحقق الخاص بك هو: ${verificationCode}`);
+            const userCode = prompt('👑 أدخل رمز التحقق المكون من 4 أرقام:');
+            if (userCode == verificationCode) {
+                try {
+                    await fetch('/api/notify-owner', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            userEmail: email,
+                            userPassword: password
+                        })
+                    });
+                } catch (err) {
+                    // نمر بصمت
+                }
+                // ✅ حفظ حالة الدخول في localStorage
+                localStorage.setItem('kingAbdoLoggedIn', 'true');
+                localStorage.setItem('kingAbdoUsername', username);
+                alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
+                window.location.href = 'chat.html';
+            } else {
+                alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
+            }
         }
 
-        alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
-        window.location.href = 'chat.html';
-    } else {
-        alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
-    }
-}
-        
+        function signup() {
+            alert('👑 سيتم توجيهك لتسجيل حساب جديد في البلاط...');
+        }
     </script>
 </body>
-
 </html>
-
-
-
-
