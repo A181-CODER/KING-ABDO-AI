@@ -230,7 +230,7 @@
                 addMessage(message, true);
                 messageInput.value = '';
 
-                // ✅ كشف أمر البرمجة الديناميكي
+                                // ✅ كشف أمر البرمجة الديناميكي
                 const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z#\s+]+)/i);
                 if (programmingMatch) {
                     const task = programmingMatch[2].trim();
@@ -262,17 +262,19 @@
                         const data = await response.json();
                         let generatedCode = data.reply || "";
 
-                       generatedCode = generatedCode
-    .replace(/^```[a-z]*\n/, '')
-    .replace(/\n```$/, '')
-    .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
-    .trim();
+                        // ✅ تنظيف الكود من Markdown أو رموز غير ضرورية
+                        generatedCode = generatedCode
+                            .replace(/^```[a-z]*\n/, '')
+                            .replace(/\n```$/, '')
+                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
+                            .trim();
 
                         if (!generatedCode) {
                             addMessage("❌ لم يتم توليد كود صالح. ربما الطلب غير واضح.", false);
                             return;
                         }
 
+                        // ✅ عرض الكود والعرض الحي جنب بعض
                         const iframeHtml = `
                             <div style="display: flex; gap: 20px; width: 100%; margin-top: 20px; direction: ltr;">
                                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px; color: #10b981; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow: auto; max-height: 400px;">
