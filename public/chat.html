@@ -262,11 +262,11 @@
                         const data = await response.json();
                         let generatedCode = data.reply || "";
 
-                        generatedCode = generatedCode
-                            .replace(/^```[a-z]*\n/, '')
-                            .replace(/\n```$/, '')
-                            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
-                            .trim();
+                       generatedCode = generatedCode
+    .replace(/^```[a-z]*\n/, '')
+    .replace(/\n```$/, '')
+    .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
+    .trim();
 
                         if (!generatedCode) {
                             addMessage("❌ لم يتم توليد كود صالح. ربما الطلب غير واضح.", false);
