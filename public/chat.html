@@ -76,6 +76,44 @@
         #sendButton:hover {
             background-color: #0056b3;
         }
+        /* أسلوب الكود الاحترافي */
+        .code-container {
+            background: #202123;
+            color: #FAFAFC;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow: auto;
+        }
+        .code-container-title {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #A0AEC0;
+        }
+        .copy-code-button {
+            background: #333;
+            border: none;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .copy-code-button:hover {
+            background: #555;
+        }
+        .code-content {
+            margin-top: 24px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #10b981;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -103,30 +141,16 @@
                         <p class="text-xs text-gray-500 mt-1 text-left">الآن</p>
                     </div>
                 </div>
-                <div class="message-enter flex justify-end">
-                    <div class="max-w-xs md:max-w-md lg:max-w-lg bg-blue-600 text-white rounded-xl p-3">
-                        <p>مرحباً جلالة الملك، كيف حالكم اليوم؟</p>
-                        <p class="text-xs text-blue-200 mt-1 text-left">الآن</p>
-                    </div>
-                </div>
-                <div class="max-w-xs md:max-w-md lg:max-w-lg bg-gray-100 rounded-xl p-3">
-                        <p class="text-gray-800">بفضل الله تعالى نحن في تمام الصحة والعافية، ونشكركم على سؤالكم الكريم.</p>
-                        <p class="text-xs text-gray-500 mt-1 text-left">الآن</p>
-                    </div>
             </div>
             <div class="border-t border-gray-200 p-4 bg-gray-50">
                 <div class="flex items-center">
-                    <button id="attachBtn" class="w-10 h-10 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 ml-2">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <input type="file" id="fileInput" multiple accept="image/*,.pdf,.docx" style="display: none;" />
                     <input 
                         id="messageInput"
                         type="text" 
                         placeholder="اكتب: اتلو سورة الكهف أو أنشئ آلة حاسبة بلغة C++" 
                         class="flex-1 border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                    <button id="sendButton" class="w-10 h-10 rounded-full colorful-gradient text-white flex items-center justify-center">
+                    <button id="sendButton" class="w-10 h-10 rounded-full colorful-gradient text-white flex items-center justify-center ml-2">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -171,7 +195,7 @@
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
         if (!localStorage.getItem('kingAbdoLoggedIn')) {
             alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
-            window.location.href = 'index.html'; // يرجعه لصفحة تسجيل الدخول
+            window.location.href = 'index.html';
         }
 
         // خريطة أسماء السور
@@ -201,36 +225,47 @@
             "النصر": 110, "المسد": 111, "الإخلاص": 112, "الفلق": 113, "الناس": 114
         };
 
-        document.getElementById("attachBtn").addEventListener("click", function () {
-            document.getElementById("fileInput").click();
-        });
-
         document.addEventListener('DOMContentLoaded', function () {
             const messageInput = document.getElementById('messageInput');
             const sendButton = document.getElementById('sendButton');
             const messagesContainer = document.getElementById('messages');
 
+            // ✅ دالة عرض الرسائل
             function addMessage(text, isUser = false) {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message-enter flex justify-' + (isUser ? 'end' : 'start');
-                const messageContent = `
-                    <div class="max-w-xs md:max-w-md lg:max-w-lg ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'} rounded-xl p-3">
-                        <p>${text}</p>
-                        <p class="text-xs ${isUser ? 'text-blue-200' : 'text-gray-500'} mt-1 text-left">الآن</p>
-                    </div>
-                `;
-                messageDiv.innerHTML = messageContent;
+
+                // ✅ إذا كان النص يحتوي على كود — نعرضه في واجهة احترافية
+                if (text.includes('<div style="display: flex; gap: 20px;') || text.includes('📜 الكود المُنشأ')) {
+                    const messageContent = `
+                        <div class="max-w-xs md:max-w-md lg:max-w-lg ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'} rounded-xl p-3">
+                            ${text}
+                            <p class="text-xs ${isUser ? 'text-blue-200' : 'text-gray-500'} mt-1 text-left">الآن</p>
+                        </div>
+                    `;
+                    messageDiv.innerHTML = messageContent;
+                } else {
+                    const messageContent = `
+                        <div class="max-w-xs md:max-w-md lg:max-w-lg ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'} rounded-xl p-3">
+                            <p>${text}</p>
+                            <p class="text-xs ${isUser ? 'text-blue-200' : 'text-gray-500'} mt-1 text-left">الآن</p>
+                        </div>
+                    `;
+                    messageDiv.innerHTML = messageContent;
+                }
+
                 messagesContainer.appendChild(messageDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
 
+            // ✅ إرسال الرسالة
             sendButton.addEventListener('click', async function () {
                 const message = messageInput.value.trim();
                 if (!message) return;
                 addMessage(message, true);
                 messageInput.value = '';
 
-                                // ✅ كشف أمر البرمجة الديناميكي
+                // ✅ كشف أمر البرمجة
                 const programmingMatch = message.match(/(أنشئ|برمج|اكتب|صمم|أنشئ لي)\s+(.+?)\s+(بلغة|باستخدام|بـ)\s+([a-zA-Z#\s+]+)/i);
                 if (programmingMatch) {
                     const task = programmingMatch[2].trim();
@@ -262,7 +297,6 @@
                         const data = await response.json();
                         let generatedCode = data.reply || "";
 
-                        // ✅ تنظيف الكود من Markdown أو رموز غير ضرورية
                         generatedCode = generatedCode
                             .replace(/^```[a-z]*\n/, '')
                             .replace(/\n```$/, '')
@@ -274,12 +308,16 @@
                             return;
                         }
 
-                        // ✅ عرض الكود والعرض الحي جنب بعض
                         const iframeHtml = `
                             <div style="display: flex; gap: 20px; width: 100%; margin-top: 20px; direction: ltr;">
                                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px; color: #10b981; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow: auto; max-height: 400px;">
                                     <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">📜 الكود المُنشأ (${language})</h3>
-                                    <pre style="white-space: pre-wrap; word-wrap: break-word;">${generatedCode}</pre>
+                                    <div class="code-container">
+                                        <div class="code-container-title">${language}</div>
+                                        <button class="copy-code-button" onclick="copyCode(this)">نسخ</button>
+                                        <button class="copy-code-button" onclick="downloadCode(this)">تحميل</button>
+                                        <pre class="code-content">${generatedCode}</pre>
+                                    </div>
                                 </div>
                                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px;">
                                     <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">👁️ العرض الحي</h3>
@@ -287,6 +325,29 @@
                                 </div>
                             </div>
                             <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #888;">كود ملكي من بلاط الملك عبدو</p>
+                            <script>
+                                function copyCode(button) {
+                                    const code = button.closest('.code-container').querySelector('.code-content').textContent;
+                                    navigator.clipboard.writeText(code).then(() => {
+                                        alert('✅ تم نسخ الكود بنجاح!');
+                                    }).catch(() => {
+                                        alert('❌ فشل النسخ.');
+                                    });
+                                }
+                                function downloadCode(button) {
+                                    const code = button.closest('.code-container').querySelector('.code-content').textContent;
+                                    const language = '${language}';
+                                    const blob = new Blob([code], { type: 'text/plain' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = 'code.' + (language === 'javascript' ? 'js' : language === 'python' ? 'py' : 'txt');
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    URL.revokeObjectURL(url);
+                                }
+                            </` + `script>
                         `;
                         addMessage(iframeHtml, false);
                         return;
@@ -324,7 +385,7 @@
                     }
                 }
 
-                // ❌ إذا لم يكن أمر تلاوة أو برمجة، استخدم Groq للدردشة العادية
+                // ❌ الدردشة العادية
                 try {
                     const response = await fetch('/api/chat', {
                         method: 'POST',
@@ -344,13 +405,14 @@
                 }
             });
 
+            // ✅ إرسال بالضغط على Enter
             messageInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     sendButton.click();
                 }
             });
 
-            // ✅ منع زر الماوس الأيمن (Right-Click) — بصمت
+            // ✅ منع زر الماوس الأيمن — بصمت
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 return false;
@@ -358,23 +420,9 @@
 
             // ✅ منع مفاتيح الاختصار — بصمت
             document.addEventListener('keydown', function(e) {
-                // F12
-                if (e.key === 'F12') {
-                    e.preventDefault();
-                    return false;
-                }
-                // Ctrl+Shift+I, Ctrl+Shift+J
-                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) {
-                    e.preventDefault();
-                    return false;
-                }
-                // Ctrl+U (عرض المصدر)
-                if (e.ctrlKey && e.key === 'u') {
-                    e.preventDefault();
-                    return false;
-                }
-                // Ctrl+Shift+C (فتح Console في بعض المتصفحات)
-                if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                    (e.ctrlKey && e.key === 'u')) {
                     e.preventDefault();
                     return false;
                 }
