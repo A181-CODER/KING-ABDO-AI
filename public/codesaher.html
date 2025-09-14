@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ساحر الكود 🧙‍♂️ — اكتب وانشئ كود فورًا!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed, #06b6d4);
+      background-attachment: fixed;
+    }
+    #codeOutput {
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #10b981;
+    }
+    /* Scrollbar أنيق */
+    #codeOutput::-webkit-scrollbar {
+      width: 8px;
+    }
+    #codeOutput::-webkit-scrollbar-track {
+      background: #1f2937;
+    }
+    #codeOutput::-webkit-scrollbar-thumb {
+      background: #4f46e5;
+      border-radius: 4px;
+    }
+    /* تأثيرات Hover */
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr !important;
+      }
+      h1 {
+        font-size: 2.5rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white font-cairo">
+  <div class="container mx-auto px-4 py-12 max-w-4xl">
+    <div class="text-center mb-10">
+      <h1 class="text-5xl font-extrabold mb-2">🧙‍♂️ ساحر الكود</h1>
+      <p class="text-xl opacity-90">قل "أنشئ" أو "برمج" — وأي كود في دماغك يظهر أمامك!</p>
+    </div>
+    <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 shadow-2xl mb-8 border border-gray-700">
+      <textarea 
+        id="userPrompt" 
+        class="w-full h-32 p-4 bg-gray-900 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" 
+        placeholder="اكتب طلبك هنا... مثال: &#10;أنشئ لي زر HTML أحمر لما أضغط عليه يغير لون الصفحة للأزرق"
+      ></textarea>
+      <div class="flex flex-wrap gap-4 mt-4">
+        <button onclick="generateCode()" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold hover:scale-105 transition-transform duration-200 shadow-lg">
+          ✨ أنشئ الكود الآن
+        </button>
+        <select id="languageSelect" class="px-4 py-3 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="auto">اختر اللغة (أو اتركها تلقائية)</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+          <option value="csharp">C#</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="go">Go</option>
+          <option value="rust">Rust</option>
+          <option value="sql">SQL</option>
+          <option value="php">PHP</option>
+        </select>
+      </div>
+    </div>
+    <!-- النتائج -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- الكود -->
+      <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-gray-700">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">📜 الكود المُنشأ</h2>
+          <button onclick="copyCode()" class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm transition">نسخ</button>
+        </div>
+        <pre id="codeOutput" class="bg-gray-900 p-4 rounded-lg overflow-auto text-left max-h-96 whitespace-pre-wrap"></pre>
+      </div>
+      <!-- العرض الحي -->
+      <div class="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-gray-700">
+        <h2 class="text-2xl font-bold mb-4">👁️ العرض الحي (Live Preview)</h2>
+        <iframe id="previewFrame" class="w-full h-80 bg-white rounded-lg border-0" src="about:blank"></iframe>
+      </div>
+    </div>
+    <div class="mt-10 text-center text-sm opacity-70">
+      ⚡ مدعوم بالذكاء الاصطناعي — لا يُستخدم لأغراض تجارية بدون إذن
+    </div>
+  </div>
+  <script>
+    // 🎯 دالة إنشاء الكود باستخدام الخادم الخلفي على Vercel
+    async function generateCode() {
+      const prompt = document.getElementById('userPrompt').value.trim();
+      const lang = document.getElementById('languageSelect').value;
+      const codeOutput = document.getElementById('codeOutput');
+      const previewFrame = document.getElementById('previewFrame');
+      if (!prompt) {
+        alert('⚠️ اكتب طلبك أولًا!');
+        return;
+      }
+      codeOutput.textContent = '🧠 ساحر الكود يتصل بالذكاء الاصطناعي... انتظر...';
+      previewFrame.src = 'about:blank';
+      try {
+        const fullPrompt = `
+أنت مساعد برمجي محترف. مهمتك: توليد كود كامل، نظيف، وقابل للتشغيل فورًا بدون أي تعليقات أو شروحات زائدة.
+اللغة المطلوبة: ${lang !== 'auto' ? lang : 'حدد اللغة الأنسب من السياق'}
+الطلب: ${prompt}
+⚠️ التعليمات:
+- لا تكتب أي شيء قبل أو بعد الكود.
+- لا تستخدم Markdown (مثل: \`\`\`).
+- لا تكتب تعليقات أو شرح.
+- إذا كان طلب HTML/CSS/JS: اجعله ملف HTML كامل (مع DOCTYPE, head, body).
+- إذا كان طلب C++, Java, Python, Go, Rust, C#...: اجعله كود كامل قابل للتشغيل (مع main() أو class أو function).
+- لا تستخدم أي مكتبات خارجية إلا إذا طُلب.
+- اجعل الكود متوافقًا مع البيئة الافتراضية.
+`;
+
+        // ✅ نرسل الطلب لخادمك الخلفي على Vercel
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userMessage: fullPrompt
+            })
+        });
+
+        const data = await response.json();
+        let generatedCode = data.reply || "";
+
+        // ✅ تنظيف الكود من Markdown أو رموز غير ضرورية
+        generatedCode = generatedCode
+            .replace(/^```[a-z]*\n/, '')
+            .replace(/\n```$/, '')
+            .replace(/^(\/\/|\/\*|\s*#.*$)/gm, '')
+            .trim();
+
+        if (!generatedCode) {
+            codeOutput.textContent = `❌ لم يتم توليد كود صالح. ربما الطلب غير واضح.`;
+            return;
+        }
+
+        codeOutput.textContent = generatedCode;
+
+        // ✅ Live Preview فقط للأكواد التي يمكن عرضها (HTML/CSS/JS)
+        if (lang === 'html' || 
+            generatedCode.includes('<!DOCTYPE html>') || 
+            generatedCode.includes('<html') ||
+            generatedCode.includes('<body') ||
+            generatedCode.includes('<script') ||
+            generatedCode.includes('<style')) {
+            const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            doc.open();
+            doc.write(generatedCode);
+            doc.close();
+        } else {
+            previewFrame.onload = () => {
+                const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+                doc.body.innerHTML = `
+                    <div style="padding:30px; text-align:center; font-family:Arial; color:#444;">
+                        <h3>👁️ العرض الحي متاح فقط للأكواد من نوع HTML/CSS/JS</h3>
+                        <p>اللغة: <strong>${lang}</strong></p>
+                        <p>يمكنك نسخ الكود واستخدامه في بيئتك المفضلة.</p>
+                    </div>
+                `;
+            };
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        codeOutput.textContent = `❌ حدث خطأ أثناء التوليد:
+${error.message}
+💡 تأكد من صحة الطلب واتصال الإنترنت.`;
+      }
+    }
+
+    // 📋 دالة النسخ
+    function copyCode() {
+      const code = document.getElementById('codeOutput').textContent;
+      if (!code || code.includes('❌') || code.includes('🧠')) {
+        alert('⚠️ لا يوجد كود صالح للنسخ!');
+        return;
+      }
+      navigator.clipboard.writeText(code).then(() => {
+        alert('✅ تم نسخ الكود بنجاح!');
+      }).catch(() => {
+        alert('❌ فشل النسخ. جرب تحديد الكود يدويًا وانسخه (Ctrl+C)');
+      });
+    }
+  </script>
+</body>
+</html>
