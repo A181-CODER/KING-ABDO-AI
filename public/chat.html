@@ -193,36 +193,29 @@
     </div>
     <script>
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
-    (function checkAccess() {
+   (function checkAccess() {
     const hasLocalLogin = localStorage.getItem('kingAbdoLoggedIn');
     const hasSession = sessionStorage.getItem('kingAbdoSession');
-    const referrer = document.referrer;
     
-    // قائمة المصادر المسموحة
-    const allowedSources = [
-        'king-abdo-ai-26dd.vercel.app',
-        'localhost',
-        '127.0.0.1',
-        'file://'
-    ];
-    
-    const isValidSource = allowedSources.some(source => 
-        window.location.href.includes(source) || 
-        (referrer && referrer.includes(source))
-    );
-    
-    // إذا كان من مصدر مسموح OR لديه تسجيل دخول
-    if (isValidSource || hasLocalLogin || hasSession) {
+    // ✅ اسمح بالدخول المباشر + المصادر المسموحة + المسجلين
+    if (hasLocalLogin || hasSession) {
         // أنشئ جلسة جديدة إذا لم تكن موجودة
         if (!hasSession) {
             sessionStorage.setItem('kingAbdoSession', 'active_' + Date.now());
         }
         console.log('✅ تم التحقق بنجاح - مرحباً في البلاط الملكي');
-    } else {
-        console.log('❌ تحقق فاشل - التوجيه إلى البوابة');
+    } 
+    // ✅ إذا كان دخول مباشر بدون تسجيل، اسمح له ولكن بدون صلاحيات كاملة
+    else {
+        console.log('👑 دخول كضيف - صلاحيات محدودة');
+        sessionStorage.setItem('kingAbdoGuest', 'true');
+        
+        // Optional: عرض رسالة ترحيب للضيف
         setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 1000);
+            if (confirm('مرحباً بك كضيف في البلاط الملكي! هل تريد التسجيل لتجربة كاملة؟')) {
+                window.location.href = 'index.html';
+            }
+        }, 2000);
     }
 })();
         // خريطة أسماء السور
