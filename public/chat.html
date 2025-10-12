@@ -193,119 +193,38 @@
     </div>
     <script>
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
-       class RoyalSecurity {
-    constructor() {
-        this.sessionDuration = 25 * 60 * 1000; // 25 دقيقة
-        this.encryptionKey = 'RoyalGuard2024';
-    }
+    (function checkAccess() {
+    const hasLocalLogin = localStorage.getItem('kingAbdoLoggedIn');
+    const hasSession = sessionStorage.getItem('kingAbdoSession');
+    const referrer = document.referrer;
     
-    initSession() {
-        const sessionData = {
-            id: this.generateId(),
-            startTime: Date.now(),
-            userAgent: navigator.userAgent,
-            ip: this.getClientIP() // تقديري
-        };
-        
-        const secureData = this.encrypt(sessionData);
-        sessionStorage.setItem('royalSession', secureData);
-        
-        // تجديد الجلسة تلقائياً
-        this.startSessionTimer();
-    }
+    // قائمة المصادر المسموحة
+    const allowedSources = [
+        'king-abdo-ai-26dd.vercel.app',
+        'localhost',
+        '127.0.0.1',
+        'file://'
+    ];
     
-    verifySession() {
-        try {
-            const secureData = sessionStorage.getItem('royalSession');
-            if (!secureData) throw new Error('No session');
-            
-            const sessionData = this.decrypt(secureData);
-            
-            // جميع التحققات
-            const checks = [
-                this.checkTime(sessionData.startTime),
-                this.checkUserAgent(sessionData.userAgent),
-                this.checkTampering(sessionData)
-            ];
-            
-            if (checks.includes(false)) {
-                this.destroySession();
-                this.redirectToLogin();
-                return false;
-            }
-            
-            return true;
-            
-        } catch (error) {
-            this.destroySession();
-            this.redirectToLogin();
-            return false;
+    const isValidSource = allowedSources.some(source => 
+        window.location.href.includes(source) || 
+        (referrer && referrer.includes(source))
+    );
+    
+    // إذا كان من مصدر مسموح OR لديه تسجيل دخول
+    if (isValidSource || hasLocalLogin || hasSession) {
+        // أنشئ جلسة جديدة إذا لم تكن موجودة
+        if (!hasSession) {
+            sessionStorage.setItem('kingAbdoSession', 'active_' + Date.now());
         }
-    }
-    
-    checkTime(startTime) {
-        return (Date.now() - startTime) < this.sessionDuration;
-    }
-    
-    checkUserAgent(storedAgent) {
-        return storedAgent === navigator.userAgent;
-    }
-    
-    checkTampering(data) {
-        return data.id && data.startTime && data.userAgent;
-    }
-    
-    encrypt(data) {
-        const json = JSON.stringify(data);
-        return btoa(json + '|' + this.encryptionKey);
-    }
-    
-    decrypt(encrypted) {
-        const decoded = atob(encrypted);
-        const json = decoded.split('|')[0];
-        return JSON.parse(json);
-    }
-    
-    generateId() {
-        return 'royal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-    
-    destroySession() {
-        sessionStorage.removeItem('royalSession');
-    }
-    
-    redirectToLogin() {
+        console.log('✅ تم التحقق بنجاح - مرحباً في البلاط الملكي');
+    } else {
+        console.log('❌ تحقق فاشل - التوجيه إلى البوابة');
         setTimeout(() => {
             window.location.href = 'index.html';
-        }, 100);
+        }, 1000);
     }
-    
-    startSessionTimer() {
-        // تجديد الجلسة كل 10 دقائق
-        setInterval(() => {
-            if (this.verifySession()) {
-                this.initSession(); // تجديد
-            }
-        }, 10 * 60 * 1000);
-    }
-    
-    getClientIP() {
-        // هذه دالة تقديرية - في production تحتاج backend
-        return 'estimated_ip';
-    }
-}
-
-// الاستخدام
-const royalGuard = new RoyalSecurity();
-
-// في login page
-// royalGuard.initSession();
-
-// في chat page
-if (!royalGuard.verifySession()) {
-    alert('الجلسة منتهية أو غير صالحة');
-}
-
+})();
         // خريطة أسماء السور
         const SURAH_NAMES = {
             "الفاتحة": 1, "البقرة": 2, "آل عمران": 3, "النساء": 4, "المائدة": 5,
