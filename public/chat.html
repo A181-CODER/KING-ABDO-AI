@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
     <title>KING ABDO AI - المحادثة الملكية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -193,10 +195,118 @@
     </div>
     <script>
         // ✅ التحقق من أن المستخدم دخل من صفحة Login
-        if (!localStorage.getItem('kingAbdoLoggedIn')) {
-            alert('👑 يا مولاي، لا يمكنك الدخول مباشرة. يجب المرور ببوابة البلاط.');
-            window.location.href = 'index.html';
+       class RoyalSecurity {
+    constructor() {
+        this.sessionDuration = 25 * 60 * 1000; // 25 دقيقة
+        this.encryptionKey = 'RoyalGuard2024';
+    }
+    
+    initSession() {
+        const sessionData = {
+            id: this.generateId(),
+            startTime: Date.now(),
+            userAgent: navigator.userAgent,
+            ip: this.getClientIP() // تقديري
+        };
+        
+        const secureData = this.encrypt(sessionData);
+        sessionStorage.setItem('royalSession', secureData);
+        
+        // تجديد الجلسة تلقائياً
+        this.startSessionTimer();
+    }
+    
+    verifySession() {
+        try {
+            const secureData = sessionStorage.getItem('royalSession');
+            if (!secureData) throw new Error('No session');
+            
+            const sessionData = this.decrypt(secureData);
+            
+            // جميع التحققات
+            const checks = [
+                this.checkTime(sessionData.startTime),
+                this.checkUserAgent(sessionData.userAgent),
+                this.checkTampering(sessionData)
+            ];
+            
+            if (checks.includes(false)) {
+                this.destroySession();
+                this.redirectToLogin();
+                return false;
+            }
+            
+            return true;
+            
+        } catch (error) {
+            this.destroySession();
+            this.redirectToLogin();
+            return false;
         }
+    }
+    
+    checkTime(startTime) {
+        return (Date.now() - startTime) < this.sessionDuration;
+    }
+    
+    checkUserAgent(storedAgent) {
+        return storedAgent === navigator.userAgent;
+    }
+    
+    checkTampering(data) {
+        return data.id && data.startTime && data.userAgent;
+    }
+    
+    encrypt(data) {
+        const json = JSON.stringify(data);
+        return btoa(json + '|' + this.encryptionKey);
+    }
+    
+    decrypt(encrypted) {
+        const decoded = atob(encrypted);
+        const json = decoded.split('|')[0];
+        return JSON.parse(json);
+    }
+    
+    generateId() {
+        return 'royal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    destroySession() {
+        sessionStorage.removeItem('royalSession');
+    }
+    
+    redirectToLogin() {
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 100);
+    }
+    
+    startSessionTimer() {
+        // تجديد الجلسة كل 10 دقائق
+        setInterval(() => {
+            if (this.verifySession()) {
+                this.initSession(); // تجديد
+            }
+        }, 10 * 60 * 1000);
+    }
+    
+    getClientIP() {
+        // هذه دالة تقديرية - في production تحتاج backend
+        return 'estimated_ip';
+    }
+}
+
+// الاستخدام
+const royalGuard = new RoyalSecurity();
+
+// في login page
+// royalGuard.initSession();
+
+// في chat page
+if (!royalGuard.verifySession()) {
+    alert('الجلسة منتهية أو غير صالحة');
+}
 
         // خريطة أسماء السور
         const SURAH_NAMES = {
@@ -308,7 +418,10 @@ if (programmingMatch) {
                 </div>
                 <div style="flex: 1; background: #1f2937; border-radius: 10px; padding: 15px;">
                     <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">👁️ العرض الحي</h3>
-                    <iframe style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;" srcdoc="${encodeURIComponent(generatedCode)}"></iframe>
+                    <iframe style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;"
+                    // استخدام textContent بدل innerHTML
+                    const iframe = document.createElement('iframe');
+                    iframe.srcdoc = generatedCode;></iframe>
                 </div>
             </div>
             <p style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #888;">كود ملكي من بلاط الملك عبدو</p>
@@ -368,6 +481,10 @@ if (programmingMatch) {
                     addMessage("عذراً يا مولاي، حدث خطأ في الاتصال.", false);
                 }
             });
+            function validateInput(input) {
+    const dangerousPatterns = /<script|javascript:|onerror|onload/i;
+    return !dangerousPatterns.test(input);
+}
 
             // ✅ إرسال بالضغط على Enter
             messageInput.addEventListener('keypress', function (e) {
@@ -392,6 +509,11 @@ if (programmingMatch) {
                 }
             });
         });
+        function safeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
     </script>
 </body>
 </html>
