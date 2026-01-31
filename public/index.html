@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>👑  KING ABDO AI</title>
-    <link rel="icon" type="image/png" href="/G.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>بوابة النخبة | Elite Gate</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
     <style>
         /* Base Reset & Variables */
         :root {
@@ -904,44 +899,10 @@
             }
         `;
         document.head.appendChild(styleSheet);
-        // ✅ منع زر الماوس الأيمن — مع استثناء حقل كلمة المرور
-    document.addEventListener('contextmenu', function(e) {
-        if (e.target.id === 'passwordInput') {
-            return true;
-        }
+
+        document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
-        return false;
     });
-if (!email || !password) {
-            alert('⚠️ الرجاء إدخال جميع البيانات.');
-            return;
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('❌ صيغة البريد الإلكتروني غير صحيحة.');
-            return;
-        }
-
-        const localPart = email.split('@')[0];
-        if (localPart.includes('.')) {
-            alert('❌ البريد الإلكتروني يحتوي على نقطة (.) — غير مسموح.');
-            return;
-        }
-
-        if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
-            alert('❌ يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
-            return;
-        }
-
-   </script>
+    </script>
 </body>
 </html>
-
-</body>
-</html>
-
-
-
-
-
