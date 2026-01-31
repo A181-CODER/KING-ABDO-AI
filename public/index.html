@@ -6,237 +6,1215 @@
     <title>👑  KING ABDO AI</title>
     <link rel="icon" type="image/png" href="/G.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KING ABDO AI - تسجيل الدخول الآمن</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', 'Amiri', serif;
         }
+
         body {
-            background: linear-gradient(135deg, #1900ff, #302b63, #24243e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #0a0f1a;
             overflow: hidden;
             position: relative;
         }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at top right, rgba(6, 182, 212, 0.15), transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(139, 92, 246, 0.15), transparent 50%),
+                radial-gradient(ellipse at center, rgba(236, 72, 153, 0.05), transparent 70%),
+                linear-gradient(135deg, #0a0f1a 0%, #1e1b4b 50%, #0a0f1a 100%);
         }
+
+        /* Neural Network Canvas */
+        #neuralCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Scanning Line */
+        .scan-line {
+            position: fixed;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+            animation: scan 4s ease-in-out infinite;
+            z-index: 3;
+            opacity: 0.5;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Main Container */
         .login-container {
             position: relative;
-            width: 90%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        .crown-logo {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        .crown-logo i {
-            font-size: 3.5rem;
-            color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.8); }
-        }
-        .crown-logo h2 {
-            color: #fff;
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            margin-top: 10px;
-            background: linear-gradient(to right, #FFD700, #007BFF, #5D3FD3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-        .form-group label {
-            display: block;
-            color: #fff;
-            margin-bottom: 8px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        .form-group input {
+            z-index: 10;
             width: 100%;
-            padding: 15px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            outline: none;
-            border: 1px solid transparent;
+            max-width: 480px;
+            padding: 20px;
         }
-        .form-group input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid #FFD700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        }
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-        .btn-login {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #0d1b2a;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-        }
-        .btn-login:hover {
-            background: linear-gradient(135deg, #FFC300, #FF8C00);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
-        }
-        .btn-signup {
-            background: transparent;
-            color: #FFD700;
-            border: 2px solid #FFD700;
-        }
-        .btn-signup:hover {
-            background: rgba(255, 215, 0, 0.1);
-            transform: translateY(-3px);
-        }
-        .divider {
-            text-align: center;
-            margin: 25px 0;
-            color: #aaa;
-            position: relative;
-        }
-        .divider::before,
-        .divider::after {
-            content: "";
+
+        /* Card Glow */
+        .card-glow {
             position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
+            inset: -2px;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+            border-radius: 28px;
+            filter: blur(20px);
+            opacity: 0.3;
+            animation: glowPulse 3s ease-in-out infinite;
         }
-        .divider::before {
-            left: 0;
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.02); }
         }
-        .divider::after {
-            right: 0;
+
+        /* Glass Card */
+        .glass-card {
+            position: relative;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            overflow: hidden;
         }
-        .social-login {
+
+        .card-top-line {
+            height: 4px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899);
+        }
+
+        .card-content {
+            padding: 40px;
+        }
+
+        /* AI Logo */
+        .logo-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            margin-bottom: 30px;
         }
-        .social-btn {
-            width: 50px;
-            height: 50px;
+
+        .ai-logo {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: spin 8s linear infinite;
+        }
+
+        .logo-ring-1 {
+            border-top-color: #06b6d4;
+            border-right-color: #06b6d4;
+        }
+
+        .logo-ring-2 {
+            inset: 8px;
+            animation-direction: reverse;
+            animation-duration: 6s;
+            border-bottom-color: #8b5cf6;
+            border-left-color: #8b5cf6;
+        }
+
+        .logo-ring-3 {
+            inset: 16px;
+            animation-duration: 10s;
+            border-top-color: #ec4899;
+            border-right-color: #ec4899;
+        }
+
+        .logo-core {
+            position: absolute;
+            inset: 24px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            border: 1px solid rgba(6, 182, 212, 0.3);
         }
-        .social-btn:hover {
-            background: #FFD700;
-            color: #0d1b2a;
-            transform: translateY(-5px);
+
+        .logo-core svg {
+            width: 32px;
+            height: 32px;
+            color: #06b6d4;
         }
-        .login-container::after {
-            content: "";
+
+        .orbit-dot {
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #FFD700, #007BFF, #5D3FD3, #FFD700);
-            background-size: 400%;
-            z-index: -1;
-            border-radius: 22px;
-            animation: borderGlow 5s linear infinite;
-            opacity: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: spin 8s linear infinite;
         }
-        .login-container:hover::after {
+
+        .orbit-dot-1 {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #06b6d4;
+            box-shadow: 0 0 10px #06b6d4;
+        }
+
+        .orbit-dot-2 {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #8b5cf6;
+            box-shadow: 0 0 10px #8b5cf6;
+            animation-direction: reverse;
+        }
+
+        .orbit-dot-3 {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background: #ec4899;
+            box-shadow: 0 0 10px #ec4899;
+            animation-duration: 10s;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Typography */
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .title .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 28px;
+            background: #8b5cf6;
+            margin-right: 4px;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #06b6d4;
+        }
+
+        .badge-container {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .security-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        .security-text {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .security-divider {
+            width: 1px;
+            height: 16px;
+            background: #334155;
+        }
+
+        .security-item svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .text-cyan { color: #06b6d4; }
+        .text-purple { color: #8b5cf6; }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-label svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper.focused {
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+        }
+
+        .input-wrapper.focused.purple {
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+
+        .input-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .input-wrapper.focused .input-glow {
             opacity: 1;
         }
-        @keyframes borderGlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 400% 0; }
+
+        .input-glow.cyan {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
         }
-        .welcome-msg {
+
+        .input-glow.purple {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .input-wrapper.focused .input-icon {
+            color: #06b6d4;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .input-wrapper.focused.purple .input-icon {
+            color: #8b5cf6;
+        }
+
+        .input-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 48px 16px 16px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        .form-input:focus {
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .form-input.purple:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .password-input {
+            padding-left: 56px;
+            font-family: monospace;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #8b5cf6;
+        }
+
+        .password-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Password Strength */
+        .password-strength {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .strength-bar.active {
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .strength-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .strength-label {
+            font-weight: 500;
+        }
+
+        .strength-encryption {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #64748b;
+        }
+
+        .strength-encryption svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Options Row */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #475569;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover .custom-checkbox {
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .checkbox-wrapper.checked .custom-checkbox {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            border-color: #06b6d4;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .custom-checkbox svg {
+            width: 12px;
+            height: 12px;
+            color: white;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper.checked .custom-checkbox svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .forgot-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: #06b6d4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #22d3ee;
+        }
+
+        .forgot-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0891b2, #7c3aed, #db2777);
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn:hover::after {
+            opacity: 1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-content svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover .btn-arrow {
+            transform: translateX(-4px);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Divider */
+        .divider {
+            position: relative;
+            margin: 28px 0;
             text-align: center;
-            color: #ccc;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            animation: fadeIn 3s ease-in-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(71, 85, 105, 0.3);
+        }
+
+        .divider span {
+            position: relative;
+            padding: 0 16px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Biometric Buttons */
+        .biometric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .biometric-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .biometric-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .biometric-btn.cyan::before {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), transparent);
+        }
+
+        .biometric-btn.purple::before {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);
+        }
+
+        .biometric-btn.pink::before {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), transparent);
+        }
+
+        .biometric-btn:hover::before {
+            opacity: 1;
+        }
+
+        .biometric-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .biometric-btn.cyan:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .biometric-btn.purple:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .biometric-btn.pink:hover {
+            border-color: rgba(236, 72, 153, 0.5);
+        }
+
+        .biometric-btn svg {
+            width: 28px;
+            height: 28px;
+            color: #64748b;
+            margin-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .biometric-btn.cyan:hover svg { color: #06b6d4; }
+        .biometric-btn.purple:hover svg { color: #8b5cf6; }
+        .biometric-btn.pink:hover svg { color: #ec4899; }
+
+        .biometric-btn span {
+            font-size: 12px;
+            color: #64748b;
+            transition: color 0.3s ease;
+        }
+
+        .biometric-btn.cyan:hover span { color: #06b6d4; }
+        .biometric-btn.purple:hover span { color: #8b5cf6; }
+        .biometric-btn.pink:hover span { color: #ec4899; }
+
+        /* Signup Link */
+        .signup-text {
+            text-align: center;
+            margin-top: 28px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .signup-link {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .signup-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Card Footer */
+        .card-footer {
+            padding: 16px 40px;
+            background: rgba(15, 23, 42, 0.5);
+            border-top: 1px solid rgba(71, 85, 105, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 12px;
+            color: #475569;
+            flex-wrap: wrap;
+        }
+
+        .card-footer a {
+            color: #475569;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card-footer a:hover {
+            color: #94a3b8;
+        }
+
+        /* Verification Step */
+        .verification-container {
+            display: none;
+        }
+
+        .verification-container.show {
+            display: block;
+        }
+
+        .login-form {
+            display: block;
+        }
+
+        .login-form.hide {
+            display: none;
+        }
+
+        .verification-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .verification-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #10b981;
+        }
+
+        .verification-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .verification-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .verification-email {
+            text-align: center;
+            color: #06b6d4;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            direction: ltr;
+        }
+
+        .code-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-family: monospace;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .code-input:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            background: linear-gradient(135deg, #059669, #0891b2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .verify-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 30px 24px;
+            }
+
+            .security-badge {
+                gap: 10px;
+            }
+
+            .security-divider {
+                display: none;
+            }
+
+            .code-input {
+                width: 42px;
+                height: 52px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Background -->
+    <div class="bg-gradient"></div>
+    
+    <!-- Neural Network Canvas -->
+    <canvas id="neuralCanvas"></canvas>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Scanning Line -->
+    <div class="scan-line"></div>
+
+    <!-- Main Container -->
     <div class="login-container">
-        <div class="crown-logo">
-            <i class="fas fa-crown"></i>
-            <h2>KING ABDO AI </h2>
-            <h4>sign up</h4> 
+        <!-- Card Glow -->
+        <div class="card-glow"></div>
+        
+        <!-- Glass Card -->
+        <div class="glass-card">
+            <div class="card-top-line"></div>
+            
+            <div class="card-content">
+                <!-- Login Form -->
+                <div class="login-form" id="loginForm">
+                    <!-- Logo -->
+                    <div class="logo-container">
+                        <div class="ai-logo">
+                            <div class="logo-ring logo-ring-1"></div>
+                            <div class="logo-ring logo-ring-2"></div>
+                            <div class="logo-ring logo-ring-3"></div>
+                            <div class="logo-core">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke-opacity="0.3"/>
+                                    <path d="M12 6v6l4 2" stroke-linecap="round"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="orbit-dot orbit-dot-1"></div>
+                            <div class="orbit-dot orbit-dot-2"></div>
+                            <div class="orbit-dot orbit-dot-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="title">
+                        <span id="typingText"></span><span class="cursor">|</span>
+                    </h1>
+                    <p class="subtitle">الدخول إلى منصة الذكاء الاصطناعي</p>
+                    <div class="badge-container">
+                        <span class="version-badge">NOVA AI v3.0</span>
+                    </div>
+
+                    <!-- Security Badge -->
+                    <div class="security-badge">
+                        <div class="security-item">
+                            <div class="security-dot"></div>
+                            <span class="security-text">اتصال آمن</span>
+                        </div>
+                        <div class="security-divider"></div>
+                        <div class="security-item">
+                            <svg class="text-cyan" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="security-text text-cyan">TLS 1.3</span>
+                        </div>
+                        <div class="security-divider"></div>
+                        <div class="security-item">
+                            <svg class="text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="security-text text-purple">AES-256</span>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="authForm">
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg class="text-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                معرف الدخول
+                            </label>
+                            <div class="input-wrapper" id="emailWrapper">
+                                <div class="input-glow cyan"></div>
+                                <div class="input-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg class="text-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                                كلمة المرور المشفرة
+                            </label>
+                            <div class="input-wrapper purple" id="passwordWrapper">
+                                <div class="input-glow purple"></div>
+                                <div class="input-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                                    </svg>
+                                </div>
+                                <input type="password" class="form-input purple password-input" id="passwordInput" placeholder="••••••••••••" required>
+                                <button type="button" class="password-toggle" id="passwordToggle">
+                                    <svg id="eyeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Password Strength -->
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="strength-bars">
+                                    <div class="strength-bar" id="bar1"></div>
+                                    <div class="strength-bar" id="bar2"></div>
+                                    <div class="strength-bar" id="bar3"></div>
+                                    <div class="strength-bar" id="bar4"></div>
+                                    <div class="strength-bar" id="bar5"></div>
+                                    <div class="strength-bar" id="bar6"></div>
+                                </div>
+                                <div class="strength-info">
+                                    <span class="strength-label" id="strengthLabel">ضعيفة</span>
+                                    <span class="strength-encryption">
+                                        <svg fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                        </svg>
+                                        مشفرة E2E
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div class="options-row">
+                            <div class="checkbox-wrapper" id="rememberWrapper">
+                                <div class="custom-checkbox">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <span class="checkbox-label">جهاز موثوق</span>
+                            </div>
+                            <a href="#" class="forgot-link">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                استعادة الوصول
+                            </a>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-content" id="btnContent">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                الدخول الآمن
+                                <svg class="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transform: rotate(180deg)">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="divider">
+                        <span>أو استخدم</span>
+                    </div>
+
+                    <!-- Biometric -->
+                    <div class="biometric-grid">
+                        <button class="biometric-btn cyan">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/>
+                            </svg>
+                            <span>بصمة</span>
+                        </button>
+                        <button class="biometric-btn purple">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                            </svg>
+                            <span>Face ID</span>
+                        </button>
+                        <button class="biometric-btn pink">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
+                            </svg>
+                            <span>مفتاح أمان</span>
+                        </button>
+                    </div>
+
+                    <!-- Signup -->
+                    <p class="signup-text">
+                        مستخدم جديد؟ 
+                        <a href="#" class="signup-link">انضم إلى NOVA AI</a>
+                    </p>
+                </div>
+
+                <!-- Verification Step -->
+                <div class="verification-container" id="verificationContainer">
+                    <div class="verification-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                        </svg>
+                    </div>
+                    <h2 class="verification-title">التحقق بخطوتين</h2>
+                    <p class="verification-subtitle">أدخل الرمز المرسل إلى</p>
+                    <p class="verification-email" id="verificationEmail"></p>
+
+                    <div class="code-inputs">
+                        <input type="text" class="code-input" maxlength="1" data-index="0">
+                        <input type="text" class="code-input" maxlength="1" data-index="1">
+                        <input type="text" class="code-input" maxlength="1" data-index="2">
+                        <input type="text" class="code-input" maxlength="1" data-index="3">
+                        <input type="text" class="code-input" maxlength="1" data-index="4">
+                        <input type="text" class="code-input" maxlength="1" data-index="5">
+                    </div>
+
+                    <button class="verify-btn" id="verifyBtn" disabled>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        تأكيد الهوية
+                    </button>
+
+                    <button class="back-btn" id="backBtn">العودة لتسجيل الدخول</button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer">
+                <span>© 2024 NOVA AI</span>
+                <span>•</span>
+                <a href="#">سياسة الخصوصية</a>
+                <span>•</span>
+                <a href="#">الشروط والأحكام</a>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="username">👑 اسم المستخدم</label>
-            <input type="text" id="username" placeholder="ادخل اسمك الكريم" autocomplete="username">
-        </div>
-        <div class="form-group">
-            <label for="email">📧 البريد الإلكتروني</label>
-            <input type="email" id="email" placeholder="ادخل بريدك " autocomplete="email">
-        </div>
-        <div class="form-group">
-            <label for="password">🔐 كلمة المرور</label>
-            <input type="password" id="password" placeholder="ادخل كلمة المرور السرية" autocomplete="current-password">
-        </div>
-        <button class="btn btn-login" onclick="login()">تسجيل الدخول</button>
-        <button class="btn btn-signup" onclick="signup()">إنشاء حساب جديد</button>
-        <div class="divider">أو</div>
-        <div class="social-login">
-            <button class="social-btn"><i class="fab fa-google"></i></button>
-            <button class="social-btn"><i class="fab fa-facebook-f"></i></button>
-            <button class="social-btn"><i class="fab fa-apple"></i></button>
-        </div>
-        <p class="welcome-msg">مرحبًا بك في عالم الملك عبدو، حيث الذكاء يخدم العرش.</p>
     </div>
     <script>
         // ✅ منع زر الماوس الأيمن — مع استثناء حقل كلمة المرور
@@ -311,4 +1289,5 @@
     </script>
 </body>
 </html>
+
 
