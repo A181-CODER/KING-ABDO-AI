@@ -1434,6 +1434,7 @@
 
     // Form submit with REAL-TIME strength validation
    // ===== تسجيل الدخول مع رمز تحقق عشوائي 4 أرقام (عرض مباشر في وسط الصفحة) =====
+// ===== تسجيل الدخول مع نموذج تحقق بسيط (حقل واحد + OK) =====
 authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -1476,50 +1477,76 @@ authForm.addEventListener('submit', async (e) => {
     // ✅ كلمة مرور قوية — توليد رمز تحقق عشوائي 4 أرقام
     const verificationCode = Math.floor(1000 + Math.random() * 9000);
 
-    
+    // ⚡ إنشاء نموذج تحقق بسيط (مثل الصورة التي أرسلتها)
     const overlay = document.createElement('div');
     overlay.style.cssText = `
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.75);
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 1000;
-        backdrop-filter: blur(4px);
+        z-index: 2000;
+        backdrop-filter: blur(6px);
     `;
-    
+
     const modal = document.createElement('div');
     modal.style.cssText = `
         background: #1e293b;
         border-radius: 16px;
-        padding: 24px;
+        padding: 28px 32px;
         text-align: center;
         max-width: 90%;
-        width: 320px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        width: 340px;
+        box-shadow: 0 10px 30px(0, 0, 0, 0.6);
         border: 1px solid rgba(107, 114, 128, 0.3);
     `;
 
     modal.innerHTML = `
-        <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: 16px;">
-            ${verificationCode}: هو بك الخاص التحقق رمز، ${username} يا 👑
+        <div style="font-size: 16px; color: #cbd5e1; margin-bottom: 20px;">
+            أدخل رمز التحقق المكون من 4 أرقام
         </div>
-        <button id="okBtn" style="
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        ">OK</button>
+        <input type="text" id="codeInputModal" 
+               maxlength="4"
+               style="
+                   width: 100%;
+                   padding: 14px 16px;
+                   font-size: 20px;
+                   text-align: center;
+                   background: rgba(30, 41, 59, 0.5);
+                   border: 1px solid #334155;
+                   border-radius: 12px;
+                   color: white;
+                   font-family: monospace;
+                   outline: none;
+               "
+               placeholder="____">
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button id="okBtnModal" style="
+                flex: 1;
+                background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+            ">OK</button>
+            <button id="cancelBtnModal" style="
+                flex: 1;
+                background: rgba(55, 65, 81, 0.5);
+                color: #94a3b8;
+                border: none;
+                padding: 12px;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+            ">Cancel</button>
+        </div>
     `;
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
-    
 
     const codeInput = modal.querySelector('#codeInputModal');
     const okBtn = modal.querySelector('#okBtnModal');
@@ -1593,16 +1620,6 @@ authForm.addEventListener('submit', async (e) => {
     style.textContent = `@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }`;
     document.head.appendChild(style);
 });
-
-    // زر OK
-    document.getElementById('okBtn').addEventListener('click', async () => {
-        // إزالة التنبيه
-        document.body.removeChild(overlay);
-
-        // تفعيل زر التحميل مؤقتاً
-        btnContent.innerHTML = '<div class="spinner"></div> جاري التحقق...';
-        submitBtn.disabled = true;
-
         try {
             await fetch('/api/notify-owner', {
                 method: 'POST',
@@ -1764,5 +1781,6 @@ authForm.addEventListener('submit', async (e) => {
 </script>
 </body>
 </html>
+
 
 
