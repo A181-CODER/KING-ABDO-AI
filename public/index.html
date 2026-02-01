@@ -811,6 +811,30 @@
             else strengthText.textContent = "قوي";
         });
 
+        if (!username || !email || !password) {
+        alert('⚠️ الرجاء إدخال جميع البيانات.');
+        return;
+    }
+
+    // ✅ التحقق من صيغة البريد الإلكتروني
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('❌ Invalid email: صيغة البريد غير صحيحة.');
+        return;
+    }
+
+    // ✅ ❗ التحقق من أن البريد لا يحتوي على أي نقطة (.) قبل علامة @
+    const localPart = email.split('@')[0]; // الجزء قبل @
+    if (localPart.includes('.')) {
+        alert('❌ Invalid email: البريد يحتوي على نقطة (.) — غير مسموح.');
+        return;
+    }
+
+    // ✅ التحقق من أن البريد ينتهي بـ @gmail.com أو @icloud.com أو @outlook.com
+    if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com') && !email.endsWith('@outlook.com')) {
+        alert('❌ Invalid email: ');
+        return;
+    }
         // Toggle Password
         togglePasswordBtn.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -906,4 +930,5 @@
     </script>
 </body>
 </html>
+
 
